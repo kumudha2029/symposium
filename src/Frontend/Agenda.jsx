@@ -2,18 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+// ✅ Allow dynamic height based on content
 const Section = styled.section`
-  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* align content from top */
   align-items: center;
   background: url("/src/Frontend/background.jpg") no-repeat center center fixed;
   background-size: cover;
   scroll-snap-align: start;
   color: #fff;
-  padding: 20px;
+  padding: 60px 20px; /* increased padding for breathing space */
   box-sizing: border-box;
 `;
 
@@ -22,6 +22,11 @@ const Title = styled.h2`
   margin-bottom: 50px;
   font-family: "Snap ITC", cursive, sans-serif;
   color: #2316b6ff;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
 `;
 
 const CardContainer = styled.div`
@@ -29,6 +34,7 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   gap: 25px;
   justify-content: center;
+  width: 100%;
 `;
 
 const EventCard = styled(motion.div)`

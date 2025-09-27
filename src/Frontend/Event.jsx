@@ -7,8 +7,12 @@ import TechnicalQuiz from "./TechnicalQuiz";
 import CodingDebugging from "./CodingDebugging";
 import PosterDesign from "./PosterDesign";
 import Innovathon from "./Innovathon";
+import presentationImg from "./presentation.jpg";
+import techicalquizimg from "./technicalquiz.jpg";
+import codeanddebugimg from "./codeanddebug.jpg";
+import posterdesignimg from "./posterdesign.jpg";
+import innovathonimg from "./innovathon.jpg";
 
-// ----- Page Wrapper -----
 export const PageWrapper = styled.div`
   min-height: 100dvh;
   width: 100%;
@@ -43,7 +47,6 @@ const Title = styled(motion.h1)`
   }
 `;
 
-// ----- Card Grid -----
 const CardGrid = styled.div`
   display: grid;
   gap: 20px;
@@ -56,6 +59,7 @@ const CardGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 15px;
+    justify-items: center; /* center the cards */
   }
 `;
 
@@ -70,9 +74,15 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   transition: transform 0.3s;
+  padding-left:-400px;
 
   &:hover {
     transform: scale(1.03);
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;   /* instead of full width */
+    max-width: 320px; /* keeps card smaller */
   }
 `;
 
@@ -80,11 +90,14 @@ const CardImage = styled.img`
   width: 100%;
   height: 140px;
   object-fit: cover;
+  object-position: top; /* focus on top part of the image */
 
   @media (max-width: 768px) {
-    height: 120px;
+    height: 130px; 
+    object-position: top; /* keep top focus on mobile too */
   }
 `;
+
 
 const CardContent = styled.div`
   padding: 15px 20px;
@@ -159,11 +172,11 @@ function EventsPage() {
   const [showInnovathon, setShowInnovathon] = useState(false);
 
   const events = [
-    { id: 1, title: "Paper Presentation", img: "/images/hackathon.jpg", onClick: () => setShowPaper(true) },
-    { id: 2, title: "Technical Quiz", img: "/images/techtalk.jpg", onClick: () => setShowQuiz(true) },
-    { id: 3, title: "Coding & Debugging", img: "/images/robotics.jpg", onClick: () => setShowCoding(true) },
-    { id: 4, title: "Poster Design", img: "/images/robotics.jpg", onClick: () => setShowPoster(true) },
-    { id: 5, title: "Innovathon", img: "/images/robotics.jpg", onClick: () => setShowInnovathon(true) },
+    { id: 1, title: "Paper Presentation", img: presentationImg, onClick: () => setShowPaper(true) },
+    { id: 2, title: "Technical Quiz", img: techicalquizimg, onClick: () => setShowQuiz(true) },
+    { id: 3, title: "Coding & Debugging", img: codeanddebugimg, onClick: () => setShowCoding(true) },
+    { id: 4, title: "Poster Design", img: posterdesignimg, onClick: () => setShowPoster(true) },
+    { id: 5, title: "Innovathon", img: innovathonimg, onClick: () => setShowInnovathon(true) },
   ];
 
   return (

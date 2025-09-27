@@ -10,11 +10,23 @@ const flip = keyframes`
 
 const TimerWrapper = styled.div`
   display: flex;
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row */
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr; /* stack vertically */
+    gap: 10px;
+  }
 `;
 
 const TimeBox = styled.div`
@@ -26,6 +38,16 @@ const TimeBox = styled.div`
   font-size: 2rem;
   font-weight: bold;
   perspective: 1000px;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    padding: 15px 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    padding: 12px 18px;
+  }
 `;
 
 const TimeNumber = styled.div`
@@ -56,16 +78,14 @@ const CountdownTimer = () => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [prevTime, setPrevTime] = useState(timeLeft);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setPrevTime(timeLeft);
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, []);
 
   return (
     <TimerWrapper>

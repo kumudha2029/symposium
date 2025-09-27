@@ -5,22 +5,28 @@ import { FiMenu } from "react-icons/fi";
 import Event from "./Event";
 import Contact from "./Contact";
 import Agenda from "./Agenda";
-import CountdownTimer from "./CountdownTimer"; // ✅ Countdown Timer
+import CountdownTimer from "./CountdownTimer";
 
+// ----- Page Wrapper -----
 const PageWrapper = styled.div`
   height: 100dvh;
   width: 100%;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
   overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+
+  @media (max-width: 768px) {
+    scroll-snap-type: none;
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
-const Section = styled.section`
+// ----- Section Wrapper -----
+const Section = styled(motion.section)`
   height: 100dvh;
   width: 100%;
   display: flex;
@@ -28,9 +34,15 @@ const Section = styled.section`
   justify-content: flex-start;
   align-items: center;
   scroll-snap-align: start;
-  position: relative;
-  padding: 0;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 100dvh;
+    scroll-snap-align: none;
+  }
 `;
 
 // ----- Hero Section -----
@@ -39,13 +51,14 @@ const Hero = styled(Section)`
   background: url("/src/Frontend/background.jpg") no-repeat center center;
   background-size: cover;
   position: relative;
+  padding-top: 80px;
 `;
 
 const HeroTitle = styled(motion.h2)`
   font-size: 2rem;
   color: #2316b6ff;
   font-family: "Snap ITC", cursive, sans-serif;
-  margin-top: 100px;
+  margin: 0;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -58,7 +71,7 @@ const HeroSubtitle = styled(motion.h2)`
   color: #2316b6ff;
   font-weight: bold;
   letter-spacing: 2px;
-  margin: 0;
+  margin: 5px 0;
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
@@ -70,7 +83,7 @@ const HeroText = styled(motion.p)`
   max-width: 90%;
   line-height: 1.5;
   opacity: 0.9;
-  margin: 10px 0 0 0;
+  margin: 5px 0 20px 0;
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -78,7 +91,7 @@ const HeroText = styled(motion.p)`
 `;
 
 const InfoBox = styled(motion.div)`
-  margin: 15px 0 0 0;
+  margin: 15px 0;
   font-size: 1rem;
   font-weight: 500;
   background: rgba(255, 255, 255, 0.15);
@@ -112,12 +125,12 @@ const Button = styled(motion.button)`
   font-size: 1rem;
   font-weight: bold;
   color: #fff;
-  background:black;
+  background: black;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: 0.4s;
-  margin: 10px;
+  margin: 15px 0;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 
   &:hover {
@@ -131,7 +144,7 @@ const Button = styled(motion.button)`
   }
 `;
 
-// ----- Hamburger & Sidebar -----
+// ----- Sidebar -----
 const Hamburger = styled.div`
   position: fixed;
   top: 20px;
@@ -149,7 +162,7 @@ const SidebarWrapper = styled(motion.div)`
   width: 250px;
   height: 100dvh;
   background: #394ca2ff;
-  color: #575293ff;
+  color: #fff;
   z-index: 500;
   padding: 50px 20px;
   display: flex;
@@ -177,7 +190,7 @@ const NavItem = styled.div`
 `;
 
 function Sidebar({ isOpen, toggleSidebar, sectionRefs }) {
-  const labels = ["Home", "Events", "Contact", "Agenda"];
+  const labels = ["Home", "Events", "Agenda", "Contact"];
 
   const handleScroll = (index) => {
     sectionRefs[index].current.scrollIntoView({ behavior: "smooth" });
@@ -204,11 +217,10 @@ function Sidebar({ isOpen, toggleSidebar, sectionRefs }) {
 export default function Home() {
   const heroRef = useRef();
   const eventRef = useRef();
-  const contactRef = useRef();
   const agendaRef = useRef();
+  const contactRef = useRef();
 
-  const sectionRefs = [heroRef, eventRef, contactRef, agendaRef];
-
+  const sectionRefs = [heroRef, eventRef, agendaRef, contactRef];
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const scrollToNext = () => {
@@ -217,6 +229,12 @@ export default function Home() {
     const currentSection = Math.floor(wrapper.scrollTop / viewportHeight);
     const nextSection = Math.min(currentSection + 1, sectionRefs.length - 1);
     sectionRefs[nextSection].current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1 } },
   };
 
   return (
@@ -232,7 +250,14 @@ export default function Home() {
       />
 
       <PageWrapper>
-        <Hero ref={heroRef}>
+        {/* Hero Section */}
+        <Hero
+          ref={heroRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <HeroTitle
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -276,6 +301,7 @@ export default function Home() {
               </a>
             </p>
           </InfoBox>
+
           <CountdownTimer />
 
           <Button
@@ -295,16 +321,37 @@ export default function Home() {
           </Button>
         </Hero>
 
-        <Section ref={eventRef}>
+        {/* Events Section */}
+        <Section
+          ref={eventRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <Event />
         </Section>
 
-        <Section ref={contactRef}>
-          <Contact />
+        {/* Agenda Section */}
+        <Section
+          ref={agendaRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
+          <Agenda />
         </Section>
 
-        <Section ref={agendaRef}>
-          <Agenda />
+        {/* Contact Section */}
+        <Section
+          ref={contactRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
+          <Contact />
         </Section>
       </PageWrapper>
     </>
