@@ -2,7 +2,7 @@ import React from "react";
 import Home from "./Frontend/Home";
 import Event from "./Frontend/Event";
 import Register from "./Frontend/Register";
-import Contact from "./Frontend/Contact";
+import Contact from "./Frontend/Contact";;
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App(){

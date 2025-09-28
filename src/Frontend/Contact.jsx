@@ -2,28 +2,28 @@ import React from "react";
 import { FiMail, FiPhone } from "react-icons/fi";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import BackgroundAnimation from "./BackgroundAnimation";
 
-// ----- Container -----
-const Section = styled(motion.section)`
-  min-height: 100vh;
-  width: 100vw;
-  background: url("/src/Frontend/background.jpg") no-repeat center center fixed;
-  background-size: cover;
-  padding: 60px 20px;
+
+
+// Content overlay so it sits above background animation
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 10;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Poppins", sans-serif;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 `;
 
 // ----- Title -----
 const Title = styled.h2`
-  font-size: 2.5rem;
-  margin-bottom: 50px;
+  color: #321cbbff;
+  font-size: 2.3rem;
+  margin-top:50px;
+  padding: 0 10px;
+  text-align: center;
   font-family: "Snap ITC", cursive, sans-serif;
-  color: #2316b6ff;
 
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -36,14 +36,14 @@ const IconBar = styled.div`
   gap: 25px;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 // ----- Icon Card -----
 const IconCard = styled(motion.a)`
   color: #2b12cdff;
   font-size: 2rem;
-  padding: 20px;
+  padding: 10px;
   border: 2px solid #1912d4ff;
   border-radius: 50%;
   display: inline-flex;
@@ -66,15 +66,37 @@ const Address = styled(motion.div)`
   color: #f0f0f0;
   line-height: 1.8;
   text-align: center;
-  margin-bottom: 50px;
+  margin: 10px;
 `;
 
-// ----- Coordinator Cards -----
+const Section = styled(motion.section)`
+  width: 100%;
+  min-height: 100vh; /* keep full-screen for large screens */
+  width: 100vw;
+  position: relative; 
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  overflow: visible; /* allow content to flow if taller than viewport */
+
+  @media (max-width: 768px) {
+    padding: 60px 15px 100px 15px; /* extra bottom padding so last card has space */
+  }
+`;
+
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
   justify-content: center;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 80px; /* ensure last card is not cut off */
+  }
 `;
 
 const CoordinatorCard = styled(motion.div)`
@@ -105,6 +127,7 @@ const CoordinatorCard = styled(motion.div)`
   p {
     font-size: 1rem;
     margin: 2px 0;
+    word-break: break-word; /* prevents long text from overflowing */
   }
 
   @media (max-width: 768px) {
@@ -112,8 +135,8 @@ const CoordinatorCard = styled(motion.div)`
   }
 `;
 
-export default function Contact() {
 
+export default function Contact() {
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
@@ -125,8 +148,8 @@ export default function Contact() {
   };
 
   const coordinators = [
-    { name: "Shaziya Naz v", phone: "+91 " },
-    { name: "Kaviyasri v", phone: "+91 " },
+    { name: "Shaziya Naz V", phone: "+91 " },
+    { name: "Kaviyasri V", phone: "+91 " },
   ];
 
   return (
@@ -136,39 +159,45 @@ export default function Contact() {
       viewport={{ once: true, amount: 0.3 }}
       variants={containerVariants}
     >
-      <Title>Contact Us</Title>
+      {/* Background Animation */}
+      <BackgroundAnimation />
 
-      <IconBar>
-        <IconCard
-          href="mailto:Pinnacle@gtec.ac.in"
-          title="Email"
-          target="_blank"
-          rel="noopener noreferrer"
-          variants={itemVariants}
-        >
-          <FiMail />
-        </IconCard>
-      </IconBar>
+      {/* Content overlay */}
+      <ContentWrapper>
+        <Title>Contact Us</Title>
 
-      <Address variants={itemVariants}>
-        <strong>Address:</strong>
-        <br />
-        Ganadipathy Tulsi's Jain Engineering College
-        <br />
-        Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102 
-      </Address>
+        <IconBar>
+          <IconCard
+            href="mailto:Pinnacle@gtec.ac.in"
+            title="Email"
+            target="_blank"
+            rel="noopener noreferrer"
+            variants={itemVariants}
+          >
+            <FiMail />
+          </IconCard>
+        </IconBar>
 
-      {/* Coordinators */}
-      <CardContainer>
-        {coordinators.map((c, i) => (
-          <CoordinatorCard key={i} variants={itemVariants}>
-            <span>{c.name}</span>
-            <p>
-              <FiPhone /> {c.phone}
-            </p>
-          </CoordinatorCard>
-        ))}
-      </CardContainer>
+        <Address variants={itemVariants}>
+          <strong>Address:</strong>
+          <br />
+          Ganadipathy Tulsi's Jain Engineering College
+          <br />
+          Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102 
+        </Address>
+
+        {/* Coordinators */}
+        <CardContainer>
+          {coordinators.map((c, i) => (
+            <CoordinatorCard key={i} variants={itemVariants}>
+              <span>{c.name}</span>
+              <p>
+                <FiPhone /> {c.phone}
+              </p>
+            </CoordinatorCard>
+          ))}
+        </CardContainer>
+      </ContentWrapper>
     </Section>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import BackgroundAnimation from "./BackgroundAnimation";
 import PaperPresentation from "./PaperPresentation";
 import TechnicalQuiz from "./TechnicalQuiz";
 import CodingDebugging from "./CodingDebugging";
@@ -13,31 +14,27 @@ import codeanddebugimg from "./codeanddebug.jpg";
 import posterdesignimg from "./posterdesign.jpg";
 import innovathonimg from "./innovathon.jpg";
 
-export const PageWrapper = styled.div`
-  min-height: 100dvh;
+// ----- Page Wrapper -----
+const PageWrapper = styled.div`
+  min-height: 100vh;
   width: 100%;
-  margin: 0;
+  margin-top: 60px;
   padding: 20px 10px;
   box-sizing: border-box;
-  background: url("/src/Frontend/background.jpg") no-repeat center center;
-  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
-
-  @media (max-width: 768px) {
-    padding: 15px 5px;
-    background-attachment: scroll;
-  }
+  position: relative;
 `;
 
 // ----- Title -----
 const Title = styled(motion.h1)`
   color: #321cbbff;
-  font-size: 2.5rem;
-  margin-bottom: 40px;
+  font-size: 2.3rem;
+  margin: 0 auto 40px auto;
+  padding: 0 10px;
   text-align: center;
   font-family: "Snap ITC", cursive, sans-serif;
 
@@ -47,7 +44,8 @@ const Title = styled(motion.h1)`
   }
 `;
 
-const CardGrid = styled.div`
+// ----- Card Grid -----
+const CardGrid = styled(motion.div)`
   display: grid;
   gap: 20px;
   width: 100%;
@@ -59,7 +57,7 @@ const CardGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 15px;
-    justify-items: center; /* center the cards */
+    justify-items: center;
   }
 `;
 
@@ -74,15 +72,14 @@ const Card = styled(motion.div)`
   display: flex;
   flex-direction: column;
   transition: transform 0.3s;
-  padding-left:-400px;
 
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
 
   @media (max-width: 768px) {
-    width: 90%;   /* instead of full width */
-    max-width: 320px; /* keeps card smaller */
+    width: 90%;
+    max-width: 320px;
   }
 `;
 
@@ -90,14 +87,12 @@ const CardImage = styled.img`
   width: 100%;
   height: 140px;
   object-fit: cover;
-  object-position: top; /* focus on top part of the image */
+  object-position: top;
 
   @media (max-width: 768px) {
-    height: 130px; 
-    object-position: top; /* keep top focus on mobile too */
+    height: 130px;
   }
 `;
-
 
 const CardContent = styled.div`
   padding: 15px 20px;
@@ -140,10 +135,10 @@ const ViewDetails = styled.span`
   }
 `;
 
-// ----- Register Button -----
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 12px 25px;
-  margin-top: 30px;
+  margin-top: 50px;
+  margin-bottom:80px;
   border: none;
   border-radius: 6px;
   background: linear-gradient(45deg, #ff4e50, #f9d423);
@@ -179,8 +174,26 @@ function EventsPage() {
     { id: 5, title: "Innovathon", img: innovathonimg, onClick: () => setShowInnovathon(true) },
   ];
 
+  // Card animation variants
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
     <PageWrapper>
+      {/* Background Animation */}
+      <BackgroundAnimation />
+
       <Title
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -189,14 +202,16 @@ function EventsPage() {
         Pinnacle's Events
       </Title>
 
-      <CardGrid>
-        {events.map((event, index) => (
+      <CardGrid
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {events.map((event) => (
           <Card
             key={event.id}
             onClick={event.onClick}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
+            variants={cardVariants}
             whileHover={{ scale: 1.05 }}
           >
             <CardImage src={event.img} alt={event.title} />
@@ -217,7 +232,13 @@ function EventsPage() {
       {showPoster && <PosterDesign onClose={() => setShowPoster(false)} />}
       {showInnovathon && <Innovathon onClose={() => setShowInnovathon(false)} />}
 
-      <Button onClick={() => navigate("/Register")}>Register</Button>
+      <Button
+        onClick={() => navigate("/Register")}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+      >
+        Register
+      </Button>
     </PageWrapper>
   );
 }
