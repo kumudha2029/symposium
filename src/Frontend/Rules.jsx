@@ -1,62 +1,76 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
-const RulesSection = styled(motion.section)`
-  width: 90%;
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 40px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  color: #fff;
-`;
+import BackgroundAnimation from "./BackgroundAnimation"; // <-- import your background animation
 
 const Title = styled.h2`
+  color: #321cbbff;
+  font-size: 2.3rem;
+  margin: 0 auto 40px auto;
+  padding: 0 10px;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 2rem;
+  font-family: "Snap ITC", cursive, sans-serif;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+`;
+
+const RulesSection = styled(motion.section)`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparent; /* background now handled by BackgroundAnimation */
+  color: #fff;
+  padding: 20px;
+  position: relative;
+  z-index: 1; /* keep content above the background */
 `;
 
 const RuleList = styled.ul`
-  padding-left: 20px;
-  line-height: 2;
-  font-size: 1.2rem;
+  margin-top: 20px;
+  list-style: none;
+  padding-left: 0;
 `;
 
-const RuleItem = styled(motion.li)`
-  margin-bottom: 15px;
+const RuleItem = styled.li`
+  margin: 10px 0;
+  font-size: 1.2rem;
+  z-index: 2;
 `;
 
 const rules = [
   "👔 Kindly follow the formal dress code.",
   "⏰ Please try to enter the venue on time.",
-  "💳 We request that payment be done on 26 October only.",
+  "💳 Payment should be done on 26 October only.",
   "🆔 Kindly carry your ID card at all times.",
   "✅ Please maintain discipline throughout the event."
 ];
 
+// ✅ Forward ref so parent can scroll to it
+const Rules = forwardRef((props, ref) => {
   return (
-    <RulesSection
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      <Title>Event Rules 📜</Title>
-      <RuleList>
-        {rules.map((rule, index) => (
-          <RuleItem
-            key={index}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.3, duration: 0.5 }}
-          >
-            {rule}
-          </RuleItem>
-        ))}
-      </RuleList>
-    </RulesSection>
+    <>
+      <BackgroundAnimation /> {/* render background behind rules */}
+      <RulesSection
+        ref={ref}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <Title>Guidelines 📜</Title>
+        <RuleList>
+          {rules.map((rule, i) => (
+            <RuleItem key={i}>{rule}</RuleItem>
+          ))}
+        </RuleList>
+      </RulesSection>
+    </>
   );
+});
 
 export default Rules;

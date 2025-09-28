@@ -1,126 +1,107 @@
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { FaHome, FaCalendarAlt, FaEnvelope, FaListAlt } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaListAlt, FaEnvelope, FaRegClipboard } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-// ----- Sidebar Styles -----
-const SidebarWrapper = styled.div`
+const SidebarWrapper = styled(motion.div)`
   position: fixed;
-  top: 50%;
-  left: 20px;
-  transform: translateY(-50%);
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 100vh;
+  background: #394ca2ff;
+  color: #fff;
+  z-index: 1000;
+  padding: 60px 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  z-index: 1000;
 
-  @media (max-width: 768px) {
+  @media (min-width: 769px) {
     display: none;
   }
 `;
 
-const NavItem = styled.div`
+const CloseButton = styled(motion.button)`
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  align-self: flex-end;
+`;
+
+const NavItem = styled(motion.div)`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: ${(props) => (props.active ? "rgba(255,78,80,0.8)" : "transparent")};
-  color: ${(props) => (props.active ? "#fff" : "#ccc")};
-  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  gap: 10px;
+  padding: 12px 15px;
+  margin: 12px 0;
   cursor: pointer;
-  transition: all 0.3s;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  user-select: none;
 
   &:hover {
-    background: rgba(255, 78, 80, 0.6);
-    color: #fff;
-    transform: translateX(5px);
+    color: #ff4e50;
+    text-shadow: 0px 0px 8px rgba(255, 78, 80, 0.8);
   }
 `;
 
-// ----- Section Styles -----
-const Section = styled.section`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  scroll-snap-align: start;
-`;
+const icons = [<FaHome />, <FaCalendarAlt />, <FaListAlt />, <FaEnvelope />, <FaRegClipboard />];
+const labels = ["Home", "Events", "Agenda", "Contact", "Guidelines"];
 
-const HomeSection = styled(Section)`background: #3498db; color: #fff;`;
-const EventsSection = styled(Section)`background: #2ecc71; color: #fff;`;
-const ContactSection = styled(Section)`background: #f1c40f; color: #000;`;
-const AgendaSection = styled(Section)`background: #e67e22; color: #fff;`;
-
-// ----- Sidebar Component -----
-const iconMap = {
-  0: <FaHome />,
-  1: <FaCalendarAlt />,
-  2: <FaEnvelope />,
-  3: <FaListAlt />,
-};
-
-const labelMap = {
-  0: "Home",
-  1: "Events",
-  2: "Contact",
-  3: "Agenda",
-};
-
-function AnimatedSidebar({ sectionRefs }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleScroll = () => {
-    const scrollPosition = window.scrollY;
-    const heights = sectionRefs.map((ref) => ref.current.offsetTop);
-    const currentIndex = heights.findIndex((top, i) => {
-      const nextTop = heights[i + 1] || Infinity;
-      return scrollPosition >= top && scrollPosition < nextTop;
-    });
-    setActiveIndex(currentIndex !== -1 ? currentIndex : 0);
+export default function Sidebar({ sectionRefs, isOpen, toggleSidebar }) {
+  const scrollToSection = (i) => {
+    sectionRefs[i].current.scrollIntoView({ behavior: "smooth" });
+    toggleSidebar(false);
   };
 
-  const scrollToSection = (index) => {
-    sectionRefs[index].current.scrollIntoView({ behavior: "smooth" });
+  const sidebarVariants = {
+    hidden: { x: "-100%" },
+    visible: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
   };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [sectionRefs]);
+  const itemVariants = {
+    hidden: { x: -30, opacity: 0, scale: 0.8 },
+    visible: { x: 0, opacity: 1, scale: 1, transition: { type: "spring", stiffness: 400, damping: 25 } },
+    hover: { scale: 1.1, rotate: [0, 2, -2, 0], transition: { duration: 0.4 } },
+  };
 
   return (
-    <SidebarWrapper>
-      {sectionRefs.map((_, index) => (
+    <SidebarWrapper
+      variants={sidebarVariants}
+      initial="hidden"
+      animate={isOpen ? "visible" : "hidden"}
+    >
+      <CloseButton
+        onClick={() => toggleSidebar(false)}
+        whileHover={{ scale: 1.3, rotate: 10 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        ×
+      </CloseButton>
+
+      {sectionRefs.map((_, i) => (
         <NavItem
-          key={index}
-          active={index === activeIndex}
-          onClick={() => scrollToSection(index)}
+          key={i}
+          onClick={() => scrollToSection(i)}
+          variants={itemVariants}
+          whileHover="hover"
         >
-          {iconMap[index]}
-          {labelMap[index]}
+          {icons[i]} {labels[i]}
         </NavItem>
       ))}
     </SidebarWrapper>
-  );
-}
-
-// ----- Main Page Component -----
-export default function App() {
-  const homeRef = useRef(null);
-  const eventsRef = useRef(null);
-  const contactRef = useRef(null);
-  const agendaRef = useRef(null);
-
-  const sectionRefs = [homeRef, eventsRef, contactRef, agendaRef];
-
-  return (
-    <div style={{ scrollSnapType: "y mandatory", overflowY: "scroll", height: "100vh" }}>
-      <AnimatedSidebar sectionRefs={sectionRefs} />
-      <HomeSection ref={homeRef}>Home</HomeSection>
-      <EventsSection ref={eventsRef}>Events</EventsSection>
-      <ContactSection ref={contactRef}>Contact</ContactSection>
-      <AgendaSection ref={agendaRef}>Agenda</AgendaSection>
-    </div>
   );
 }

@@ -1,3 +1,4 @@
+// Home.jsx
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -7,6 +8,8 @@ import Agenda from "./Agenda";
 import Contact from "./Contact";
 import CountdownTimer from "./CountdownTimer";
 import BackgroundAnimation from "./BackgroundAnimation";
+import Rules from "./Rules";
+import Sidebar from "./Sidebar";
 
 // ----- Page Wrapper -----
 const PageWrapper = styled.div`
@@ -23,18 +26,13 @@ const PageWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-
-  html, body {
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-  }
 `;
 
 // ----- Section -----
 const Section = styled(motion.section)`
   width: 100%;
   min-height: 100vh;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,26 +49,26 @@ const Section = styled(motion.section)`
 // ----- Hero Section -----
 const HeroTitle = styled(motion.h1)`
   font-family: "Snap ITC", cursive, sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   color: #2316b6ff;
+  margin-top: 0px;
   text-align: center;
-  margin-bottom: 5px;
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.1rem; 
   }
 `;
 
 const HeroSubtitle = styled(motion.h2)`
   font-family: "Snap ITC", cursive, sans-serif;
   font-size: 2rem;
-  color: #2316b6ff;
+  color: #ff4e50;
   font-weight: bold;
   text-align: center;
   margin-bottom: 15px;
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -93,7 +91,7 @@ const InfoBox = styled(motion.div)`
   backdrop-filter: blur(6px);
   margin-bottom: 25px;
   text-align: center;
-  max-width: 350px;
+  max-width: 380px;
 
   p {
     margin: 5px 0;
@@ -120,7 +118,7 @@ const HeroButton = styled(motion.button)`
   border: none;
   border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
   margin-top: 20px;
 
   &:hover {
@@ -134,82 +132,14 @@ const HeroButton = styled(motion.button)`
   }
 `;
 
-// ----- Sidebar -----
-const Hamburger = styled.div`
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 2rem;
-  color: #2316b6ff;
-  cursor: pointer;
-  z-index: 300;
-`;
-
-const SidebarWrapper = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-  background: #394ca2ff;
-  color: #fff;
-  z-index: 500;
-  padding: 50px 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #fff;
-  cursor: pointer;
-  align-self: flex-end;
-`;
-
-const NavItem = styled.div`
-  color: #fff;
-  font-size: 1.2rem;
-  margin: 20px 0;
-  cursor: pointer;
-
-  &:hover {
-    color: #ff4e50;
-  }
-`;
-
-function Sidebar({ isOpen, toggleSidebar, sectionRefs }) {
-  const labels = ["Home", "Events", "Agenda", "Contact"];
-  const handleScroll = (index) => {
-    sectionRefs[index].current.scrollIntoView({ behavior: "smooth" });
-    toggleSidebar(false);
-  };
-
-  return (
-    <SidebarWrapper
-      initial={{ x: "-100%" }}
-      animate={{ x: isOpen ? "0%" : "-100%" }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
-      <CloseButton onClick={() => toggleSidebar(false)}>×</CloseButton>
-      {sectionRefs.map((_, i) => (
-        <NavItem key={i} onClick={() => handleScroll(i)}>
-          {labels[i]}
-        </NavItem>
-      ))}
-    </SidebarWrapper>
-  );
-}
-
-// ----- Main Home Component -----
 export default function Home() {
   const heroRef = useRef();
   const eventRef = useRef();
   const agendaRef = useRef();
   const contactRef = useRef();
-  const sectionRefs = [heroRef, eventRef, agendaRef, contactRef];
+  const rulesRef = useRef();
 
+  const sectionRefs = [heroRef, eventRef, agendaRef, contactRef, rulesRef];
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const scrollToNext = () => {
@@ -227,38 +157,130 @@ export default function Home() {
 
   return (
     <>
-      <Hamburger onClick={() => setSidebarOpen(true)}>
+      {/* Sidebar Menu Button */}
+      <div
+        style={{
+          position: "fixed",
+          top: 20,
+          left: 20,
+          fontSize: "2rem",
+          color: "#2316b6ff",
+          zIndex: 300,
+          cursor: "pointer",
+        }}
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
         <FiMenu />
-      </Hamburger>
-
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={setSidebarOpen} sectionRefs={sectionRefs} />
+      </div>
 
       <PageWrapper>
         {/* Background Animation */}
         <BackgroundAnimation />
 
+        {/* Sidebar */}
+        <Sidebar
+          sectionRefs={sectionRefs}
+          isOpen={sidebarOpen}
+          toggleSidebar={setSidebarOpen}
+        />
+
         {/* Hero Section */}
-        <Section ref={heroRef} initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.3 }}}}>
-          <HeroTitle
-            variants={{ hidden: { opacity: 0, scale: 0.5 }, visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 200, duration: 1.5 }}}}
+        <Section
+          ref={heroRef}
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.3 } },
+          }}
+        >
+          {/* GTEC logo + college name inline */}
+          <motion.div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              marginTop: "80px",
+              textAlign: "center",
+              flexWrap: "nowrap", // ✅ always inline
+            }}
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
           >
-            Ganadipathy Tulsi's Jain Engineering College
-          </HeroTitle>
+            <motion.img
+              src="/gtec.jpeg"
+              alt="GTEC Logo"
+              style={{
+                width: "65px",
+                height: "auto",
+              }}
+              whileHover={{ scale: 1.1 }}
+            />
+
+            <HeroTitle
+              variants={{
+                hidden: { opacity: 0, scale: 0.5 },
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    type: "spring",
+                    stiffness: 200,
+                    duration: 1.5,
+                  },
+                },
+              }}
+            >
+              Ganadipathy Tulsi's Jain Engineering College
+            </HeroTitle>
+          </motion.div>
+
+          {/* 25 Years Logo below */}
+          <motion.img
+            src="/25year.jpg"
+            alt="25 Years Celebration"
+            style={{
+              width: "100px",
+              height: "auto",
+              margin: "10px 0 20px 0",
+            }}
+            whileHover={{ scale: 1.1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
+          />
 
           <HeroSubtitle
-            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 1.2 }}}}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 1.2 } },
+            }}
           >
-            Pinnacle's 25
+            National Level Technical Symposium <br />{" "}
+            <span style={{ color: "#ff4e50" }}>Pinnacle’25</span>
           </HeroSubtitle>
 
           <HeroText
-            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 1.2 }}}}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 1.2 } },
+            }}
           >
-            Empowering innovation, knowledge, and <br />creativity for a brighter tomorrow.
+            Empowering innovation, knowledge, and <br />
+            creativity for a brighter tomorrow.
           </HeroText>
 
           <InfoBox
-            variants={{ hidden: { opacity: 0, rotateY: 90 }, visible: { opacity: 1, rotateY: 0, transition: { duration: 1.2 }}}}
+            variants={{
+              hidden: { opacity: 0, rotateY: 90 },
+              visible: {
+                opacity: 1,
+                rotateY: 0,
+                transition: { duration: 1.2 },
+              },
+            }}
           >
             <p>📅 Date: 16th October 2025</p>
             <p>⏰ Time: 9:00 AM – 5:00 PM</p>
@@ -274,6 +296,7 @@ export default function Home() {
             </p>
           </InfoBox>
 
+          {/* Countdown Timer */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -282,31 +305,58 @@ export default function Home() {
             <CountdownTimer />
           </motion.div>
 
+          {/* CTA Button */}
           <HeroButton
             onClick={scrollToNext}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 1.5, delay: 0.2 } }}
           >
             Explore Events →
           </HeroButton>
         </Section>
-<br/>
-<br/>
-<br/>
+
         {/* Events Section */}
-        <Section ref={eventRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+        <Section
+          ref={eventRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <Event />
         </Section>
 
         {/* Agenda Section */}
-        <Section ref={agendaRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+        <Section
+          ref={agendaRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <Agenda />
         </Section>
+
         {/* Contact Section */}
-        <Section ref={contactRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+        <Section
+          ref={contactRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <Contact />
+        </Section>
+
+        {/* Rules Section */}
+        <Section
+          ref={rulesRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
+          <Rules />
         </Section>
       </PageWrapper>
     </>
