@@ -1,10 +1,30 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import BackgroundAnimation from "./BackgroundAnimation"; // <-- import your background animation
+
+// ---------- Video Background ----------
+const VideoBackground = styled.video`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* dark overlay for text readability */
+  z-index: -1;
+`;
 
 const Title = styled.h2`
-  color: #321cbbff;
+  color: yellow;
   font-size: 2.3rem;
   margin: 0 auto 40px auto;
   padding: 0 10px;
@@ -24,11 +44,11 @@ const RulesSection = styled(motion.section)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: transparent; /* background now handled by BackgroundAnimation */
+  background: transparent; /* video handles background */
   color: #fff;
   padding: 20px;
   position: relative;
-  z-index: 1; /* keep content above the background */
+  z-index: 1; /* keep content above video */
 `;
 
 const RuleList = styled.ul`
@@ -46,7 +66,7 @@ const RuleItem = styled.li`
 const rules = [
   "👔 Kindly follow the formal dress code.",
   "⏰ Please try to enter the venue on time.",
-  "💳 Payment should be done on 26 October only.",
+  "💳 Payment should be done on 16th October (online payment) only.",
   "🆔 Kindly carry your ID card at all times.",
   "✅ Please maintain discipline throughout the event."
 ];
@@ -55,7 +75,13 @@ const rules = [
 const Rules = forwardRef((props, ref) => {
   return (
     <>
-      <BackgroundAnimation /> {/* render background behind rules */}
+      {/* Background Video */}
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </VideoBackground>
+      <Overlay />
+
       <RulesSection
         ref={ref}
         initial={{ opacity: 0, y: 50 }}

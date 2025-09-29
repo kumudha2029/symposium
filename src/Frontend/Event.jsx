@@ -1,18 +1,41 @@
+// EventsPage.jsx
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import BackgroundAnimation from "./BackgroundAnimation";
+import { motion, AnimatePresence } from "framer-motion";
+
 import PaperPresentation from "./PaperPresentation";
 import TechnicalQuiz from "./TechnicalQuiz";
 import CodingDebugging from "./CodingDebugging";
 import PosterDesign from "./PosterDesign";
 import Innovathon from "./Innovathon";
+
 import presentationImg from "./presentation.jpg";
 import techicalquizimg from "./technicalquiz.jpg";
 import codeanddebugimg from "./codeanddebug.jpg";
 import posterdesignimg from "./posterdesign.jpg";
 import innovathonimg from "./innovathon.jpg";
+
+// ----- Background Video -----
+const VideoBackground = styled.video`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+`;
+
+const OverlayBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+`;
 
 // ----- Page Wrapper -----
 const PageWrapper = styled.div`
@@ -27,11 +50,12 @@ const PageWrapper = styled.div`
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
   position: relative;
+  color: #ffffff;
 `;
 
 // ----- Title -----
 const Title = styled(motion.h1)`
-  color: #321cbbff;
+  color: #ffeb3b;
   font-size: 2.3rem;
   margin: 0 auto 40px auto;
   padding: 0 10px;
@@ -63,11 +87,11 @@ const CardGrid = styled(motion.div)`
 
 // ----- Card -----
 const Card = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -105,7 +129,7 @@ const CardContent = styled.div`
 const CardTitle = styled.h2`
   font-size: 1.3rem;
   margin: 0 0 10px 0;
-  color: #ffeb3b;
+  color: #ffe600;
 
   @media (max-width: 768px) {
     font-size: 1.1rem;
@@ -138,7 +162,7 @@ const ViewDetails = styled.span`
 const Button = styled(motion.button)`
   padding: 12px 25px;
   margin-top: 50px;
-  margin-bottom:80px;
+  margin-bottom: 80px;
   border: none;
   border-radius: 6px;
   background: linear-gradient(45deg, #ff4e50, #f9d423);
@@ -160,28 +184,19 @@ const Button = styled(motion.button)`
 
 function EventsPage() {
   const navigate = useNavigate();
-  const [showPaper, setShowPaper] = useState(false);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showCoding, setShowCoding] = useState(false);
-  const [showPoster, setShowPoster] = useState(false);
-  const [showInnovathon, setShowInnovathon] = useState(false);
+  const [activeEvent, setActiveEvent] = useState(null); // store event key
 
   const events = [
-    { id: 1, title: "Paper Presentation", img: presentationImg, onClick: () => setShowPaper(true) },
-    { id: 2, title: "Technical Quiz", img: techicalquizimg, onClick: () => setShowQuiz(true) },
-    { id: 3, title: "Coding & Debugging", img: codeanddebugimg, onClick: () => setShowCoding(true) },
-    { id: 4, title: "Poster Design", img: posterdesignimg, onClick: () => setShowPoster(true) },
-    { id: 5, title: "Innovathon", img: innovathonimg, onClick: () => setShowInnovathon(true) },
+    { id: 1, title: "Paper Presentation", img: presentationImg, component: PaperPresentation },
+    { id: 2, title: "Technical Quiz", img: techicalquizimg, component: TechnicalQuiz },
+    { id: 3, title: "Coding & Debugging", img: codeanddebugimg, component: CodingDebugging },
+    { id: 4, title: "Poster Design", img: posterdesignimg, component: PosterDesign },
+    { id: 5, title: "Innovathon", img: innovathonimg, component: Innovathon },
   ];
 
-  // Card animation variants
   const containerVariants = {
     hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
+    visible: { transition: { staggerChildren: 0.2 } },
   };
 
   const cardVariants = {
@@ -191,8 +206,10 @@ function EventsPage() {
 
   return (
     <PageWrapper>
-      {/* Background Animation */}
-      <BackgroundAnimation />
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+      </VideoBackground>
+      <OverlayBackground />
 
       <Title
         initial={{ opacity: 0, y: -50 }}
@@ -202,15 +219,11 @@ function EventsPage() {
         Pinnacle's Events
       </Title>
 
-      <CardGrid
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
+      <CardGrid variants={containerVariants} initial="hidden" animate="visible">
         {events.map((event) => (
           <Card
             key={event.id}
-            onClick={event.onClick}
+            onClick={() => setActiveEvent(event.id)}
             variants={cardVariants}
             whileHover={{ scale: 1.05 }}
           >
@@ -225,12 +238,18 @@ function EventsPage() {
         ))}
       </CardGrid>
 
-      {/* Individual Popups */}
-      {showPaper && <PaperPresentation onClose={() => setShowPaper(false)} />}
-      {showQuiz && <TechnicalQuiz onClose={() => setShowQuiz(false)} />}
-      {showCoding && <CodingDebugging onClose={() => setShowCoding(false)} />}
-      {showPoster && <PosterDesign onClose={() => setShowPoster(false)} />}
-      {showInnovathon && <Innovathon onClose={() => setShowInnovathon(false)} />}
+      {/* Animated Popups */}
+      <AnimatePresence>
+        {activeEvent && (() => {
+          const EventComponent = events.find(e => e.id === activeEvent)?.component;
+          return EventComponent ? (
+            <EventComponent
+              isOpen={true}
+              onClose={() => setActiveEvent(null)}
+            />
+          ) : null;
+        })()}
+      </AnimatePresence>
 
       <Button
         onClick={() => navigate("/Register")}

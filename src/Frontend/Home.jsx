@@ -7,9 +7,30 @@ import Event from "./Event";
 import Agenda from "./Agenda";
 import Contact from "./Contact";
 import CountdownTimer from "./CountdownTimer";
-import BackgroundAnimation from "./BackgroundAnimation";
 import Rules from "./Rules";
 import Sidebar from "./Sidebar";
+import Chatbot from "./Chatbot";
+
+// ----- Background Video -----
+const VideoBackground = styled.video`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2; /* keep behind everything */
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
+  z-index: -1;
+`;
 
 // ----- Page Wrapper -----
 const PageWrapper = styled.div`
@@ -50,12 +71,12 @@ const Section = styled(motion.section)`
 const HeroTitle = styled(motion.h1)`
   font-family: "Snap ITC", cursive, sans-serif;
   font-size: 2.3rem;
-  color: #2316b6ff;
+  color: #ffffff;
   margin-top: 0px;
   text-align: center;
 
   @media (max-width: 768px) {
-    font-size: 1.1rem; 
+    font-size: 1.1rem;
   }
 `;
 
@@ -78,6 +99,7 @@ const HeroText = styled(motion.p)`
   line-height: 1.5;
   opacity: 0.9;
   margin-bottom: 20px;
+  color: #fff;
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -92,6 +114,7 @@ const InfoBox = styled(motion.div)`
   margin-bottom: 25px;
   text-align: center;
   max-width: 380px;
+  color: #fff;
 
   p {
     margin: 5px 0;
@@ -99,7 +122,7 @@ const InfoBox = styled(motion.div)`
   }
 
   a {
-    color: #1b1a19ff;
+    color: #ffe600;
     text-decoration: underline;
     font-weight: bold;
 
@@ -120,6 +143,7 @@ const HeroButton = styled(motion.button)`
   cursor: pointer;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
   margin-top: 20px;
+  margin-bottom:100px;
 
   &:hover {
     transform: scale(1.05);
@@ -164,7 +188,7 @@ export default function Home() {
           top: 20,
           left: 20,
           fontSize: "2rem",
-          color: "#2316b6ff",
+          color: "#ffffff",
           zIndex: 300,
           cursor: "pointer",
         }}
@@ -173,10 +197,13 @@ export default function Home() {
         <FiMenu />
       </div>
 
-      <PageWrapper>
-        {/* Background Animation */}
-        <BackgroundAnimation />
+      {/* Background Video */}
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+      </VideoBackground>
+      <Overlay />
 
+      <PageWrapper>
         {/* Sidebar */}
         <Sidebar
           sectionRefs={sectionRefs}
@@ -203,7 +230,7 @@ export default function Home() {
               gap: "10px",
               marginTop: "80px",
               textAlign: "center",
-              flexWrap: "nowrap", // ✅ always inline
+              flexWrap: "nowrap",
             }}
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -358,6 +385,7 @@ export default function Home() {
         >
           <Rules />
         </Section>
+        <Chatbot />
       </PageWrapper>
     </>
   );

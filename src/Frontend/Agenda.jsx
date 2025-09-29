@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import BackgroundAnimation from "./BackgroundAnimation";
 
 // ----- Section Wrapper -----
 const Section = styled.section`
@@ -12,6 +11,28 @@ const Section = styled.section`
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+`;
+
+// Background Video
+const VideoBackground = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+`;
+
+// Overlay for readability
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45); /* darken video slightly */
+  z-index: -1;
 `;
 
 // Content overlay
@@ -26,12 +47,13 @@ const ContentWrapper = styled.div`
 
 // Title
 const Title = styled.h2`
-  color: #321cbbff;
+  color: #ffeb3b; /* bright yellow for contrast */
   font-size: 2.3rem;
   margin: 0 auto 40px auto;
   padding: 0 10px;
   text-align: center;
   font-family: "Snap ITC", cursive, sans-serif;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -43,7 +65,7 @@ const Title = styled.h2`
 const TimelineWrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 65vh; // scrollable container height
+  height: 75vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -54,6 +76,7 @@ const TimelineWrapper = styled.div`
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
   }
 `;
 
@@ -72,25 +95,27 @@ const TimeCircle = styled.div`
   background: linear-gradient(135deg, #ff4e50, #f9d423);
   color: #fff;
   display: flex;
-  flex-direction: column; /* stack time + am/pm */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-weight: bold;
   margin-bottom: 10px;
   flex-shrink: 0;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 `;
 
 // Rectangular box for event
 const EventBox = styled.div`
   width: 100%;
   padding: 15px 20px;
-  background: linear-gradient(135deg, #ff4e50, #f9d423);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   color: #fff;
   font-weight: bold;
   text-align: center;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.35);
 
   @media (max-width: 768px) {
     padding: 12px 15px;
@@ -111,7 +136,12 @@ export default function Agenda() {
 
   return (
     <Section>
-      <BackgroundAnimation />
+      {/* Video Background */}
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+      </VideoBackground>
+      <Overlay />
+
       <ContentWrapper>
         <Title>Agenda</Title>
         <TimelineWrapper>

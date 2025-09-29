@@ -1,51 +1,58 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import BackgroundAnimation from "./BackgroundAnimation";
 
-const PageWrapper = styled.div`
+// ----- Video Background -----
+const VideoBackground = styled.video`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
+  z-index: -1;
+`;
+
+// ----- Page Wrapper -----
+const PageWrapper = styled.div`
+  width: 100vw;
+  min-height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  html, body {
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-  }
+  position: relative;
 `;
 
+// ----- Form Wrapper -----
 const FormWrapper = styled.div`
   width: 100%;
   max-width: 500px;
   padding: 30px 20px;
   border-radius: 16px;
   color: #fff;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0px);
   box-sizing: border-box;
   overflow-y: auto;
   max-height: 90vh;
-  margin-top:300px;
+  margin-top: 60px;
 
-  /* Center horizontally */
-  margin-top:60px;
-
-  /* Optional: add some vertical spacing on mobile */
   @media (max-width: 600px) {
     padding: 10px 15px;
   }
 `;
-
 
 // ----- Titles -----
 const Title = styled.h1`
@@ -146,11 +153,11 @@ const CongratsBox = styled.div`
   color: #0a2fc5ff;
   max-width: 500px;
   width: 100%;
-  margin-top:50px;               /* horizontal center */
+  margin-top: 80px;
 `;
 
 const CongratsTitle = styled.h1`
-  color: #0a2fc5ff;
+  color: yellow;
   font-size: 2rem;
   margin-bottom: 15px;
   font-family: "Snap ITC", cursive, sans-serif;
@@ -161,7 +168,7 @@ const CongratsTitle = styled.h1`
 `;
 
 const Eventname = styled.h1`
-  color: #0a2fc5ff;
+  color: yellow;
   font-size: 1.2rem;
   margin-bottom: 15px;
   font-family: "Snap ITC", cursive, sans-serif;
@@ -172,7 +179,7 @@ const Eventname = styled.h1`
 `;
 
 const CongratsText = styled.p`
-  color: #191818ff;
+  color: white;
   font-size: 1.2rem;
 
   @media (max-width: 480px) {
@@ -181,7 +188,7 @@ const CongratsText = styled.p`
 `;
 
 const EventList = styled.ul`
-  color: #191818ff;
+  color: white;
   font-size: 1.2rem;
   padding-left: 20px;
   margin-top: 10px;
@@ -257,7 +264,10 @@ function RegistrationPage() {
 
   return (
     <PageWrapper>
-      <BackgroundAnimation />
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+      </VideoBackground>
+      <Overlay />
       <BackButton onClick={() => navigate("/")}>⬅ Back</BackButton>
 
       {!submitted ? (

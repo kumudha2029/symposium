@@ -2,11 +2,29 @@ import React from "react";
 import { FiMail, FiPhone } from "react-icons/fi";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import BackgroundAnimation from "./BackgroundAnimation";
 
+// ---------- Video Background ----------
+const VideoBackground = styled.video`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1; /* stay behind content */
+`;
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
+  z-index: -1;
+`;
 
-// Content overlay so it sits above background animation
+// Content overlay so it sits above background
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 10;
@@ -18,9 +36,9 @@ const ContentWrapper = styled.div`
 
 // ----- Title -----
 const Title = styled.h2`
-  color: #321cbbff;
+  color: #eaea15ff;
   font-size: 2.3rem;
-  margin-top:50px;
+  margin-top: 50px;
   padding: 0 10px;
   text-align: center;
   font-family: "Snap ITC", cursive, sans-serif;
@@ -41,10 +59,10 @@ const IconBar = styled.div`
 
 // ----- Icon Card -----
 const IconCard = styled(motion.a)`
-  color: #2b12cdff;
+  color: #e5f023ff;
   font-size: 2rem;
   padding: 10px;
-  border: 2px solid #1912d4ff;
+  border: 2px solid #e5f023ff;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -66,24 +84,24 @@ const Address = styled(motion.div)`
   color: #f0f0f0;
   line-height: 1.8;
   text-align: center;
-  margin: 10px;
+  margin: 20px;
 `;
 
 const Section = styled(motion.section)`
   width: 100%;
-  min-height: 100vh; /* keep full-screen for large screens */
+  min-height: 100vh;
   width: 100vw;
-  position: relative; 
+  position: relative;
   padding: 60px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: "Poppins", sans-serif;
   color: #fff;
-  overflow: visible; /* allow content to flow if taller than viewport */
+  overflow: visible;
 
   @media (max-width: 768px) {
-    padding: 60px 15px 100px 15px; /* extra bottom padding so last card has space */
+    padding: 60px 15px 100px 15px;
   }
 `;
 
@@ -92,10 +110,10 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   gap: 25px;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
   @media (max-width: 768px) {
-    margin-bottom: 80px; /* ensure last card is not cut off */
+    margin-bottom: 80px;
   }
 `;
 
@@ -104,7 +122,7 @@ const CoordinatorCard = styled(motion.div)`
   padding: 20px;
   border-radius: 20px;
   width: 250px;
-  min-height: 120px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,14 +145,13 @@ const CoordinatorCard = styled(motion.div)`
   p {
     font-size: 1rem;
     margin: 2px 0;
-    word-break: break-word; /* prevents long text from overflowing */
+    word-break: break-word;
   }
 
   @media (max-width: 768px) {
     width: 80%;
   }
 `;
-
 
 export default function Contact() {
   const itemVariants = {
@@ -159,8 +176,12 @@ export default function Contact() {
       viewport={{ once: true, amount: 0.3 }}
       variants={containerVariants}
     >
-      {/* Background Animation */}
-      <BackgroundAnimation />
+      {/* Background Video */}
+      <VideoBackground autoPlay loop muted playsInline>
+        <source src="/BackgroundVideo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </VideoBackground>
+      <Overlay />
 
       {/* Content overlay */}
       <ContentWrapper>
@@ -183,7 +204,7 @@ export default function Contact() {
           <br />
           Ganadipathy Tulsi's Jain Engineering College
           <br />
-          Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102 
+          Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102
         </Address>
 
         {/* Coordinators */}
