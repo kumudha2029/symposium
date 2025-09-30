@@ -2,7 +2,6 @@ import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-// ---------- Video Background ----------
 const VideoBackground = styled.video`
   position: fixed;
   top: 0;
@@ -19,7 +18,6 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* dark overlay for text readability */
   z-index: -1;
 `;
 
@@ -44,11 +42,11 @@ const RulesSection = styled(motion.section)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: transparent; /* video handles background */
+  background: transparent;
   color: #fff;
   padding: 20px;
   position: relative;
-  z-index: 1; /* keep content above video */
+  z-index: 1;
 `;
 
 const RuleList = styled.ul`
@@ -68,14 +66,14 @@ const rules = [
   "⏰ Please try to enter the venue on time.",
   "💳 Payment should be done on 16th October (online payment) only.",
   "🆔 Kindly carry your ID card at all times.",
-  "✅ Please maintain discipline throughout the event."
+  "✅ Please maintain discipline throughout the event.",
+  "💡 The Registration fee for paper presentation is Rs.200/- per participant.",
+  "📌 Registration fee Rs.100/- per participant to participate in all the other events."
 ];
 
-// ✅ Forward ref so parent can scroll to it
 const Rules = forwardRef((props, ref) => {
   return (
     <>
-      {/* Background Video */}
       <VideoBackground autoPlay loop muted playsInline>
         <source src="/BackgroundVideo.mp4" type="video/mp4" />
         Your browser does not support the video tag.

@@ -18,17 +18,10 @@ const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
-  z-index: -1;
 `;
 
 // Content overlay so it sits above background
 const ContentWrapper = styled.div`
-  position: relative;
-  z-index: 10;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -165,8 +158,8 @@ export default function Contact() {
   };
 
   const coordinators = [
-    { name: "Shaziya Naz V", phone: "+91 " },
-    { name: "Kaviyasri V", phone: "+91 " },
+    { name: "Dinesh K R", phone: "+9199447 94910" },
+    { name: "JayaPrasanth V", phone: "+9193616 56105" },
   ];
 
   return (

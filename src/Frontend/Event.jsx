@@ -7,16 +7,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import PaperPresentation from "./PaperPresentation";
 import TechnicalQuiz from "./TechnicalQuiz";
 import CodingDebugging from "./CodingDebugging";
-import PosterDesign from "./PosterDesign";
-import Innovathon from "./Innovathon";
+import PosterDesign from "./TechTalks";
+import Innovathon from "./CodeCraze";
 
 import presentationImg from "./presentation.jpg";
-import techicalquizimg from "./technicalquiz.jpg";
+import technicalquizimg from "./technicalquiz.jpg";
 import codeanddebugimg from "./codeanddebug.jpg";
 import posterdesignimg from "./posterdesign.jpg";
 import innovathonimg from "./innovathon.jpg";
 
-// ----- Background Video -----
+// ----- Background -----
 const VideoBackground = styled.video`
   position: fixed;
   top: 0;
@@ -33,11 +33,10 @@ const OverlayBackground = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
   z-index: -1;
 `;
 
-// ----- Page Wrapper -----
+// ----- Wrapper -----
 const PageWrapper = styled.div`
   min-height: 100vh;
   width: 100%;
@@ -60,11 +59,12 @@ const Title = styled(motion.h1)`
   margin: 0 auto 40px auto;
   padding: 0 10px;
   text-align: center;
-  font-family: "Snap ITC", cursive, sans-serif;
+  font-family: "Times New Roman", Times, serif;
 
   @media (max-width: 768px) {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     margin-bottom: 25px;
+    margin-top: 20px;
   }
 `;
 
@@ -73,15 +73,13 @@ const CardGrid = styled(motion.div)`
   display: grid;
   gap: 20px;
   width: 100%;
-  max-width: 900px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  padding: 0;
-  box-sizing: border-box;
+  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  justify-items: center;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 15px;
-    justify-items: center;
   }
 `;
 
@@ -91,44 +89,42 @@ const Card = styled(motion.div)`
   backdrop-filter: blur(10px);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s;
+  width: 250px;
+  min-height: 280px;
+  transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
     transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   }
 
   @media (max-width: 768px) {
-    width: 90%;
-    max-width: 320px;
+    max-width: 90%;
   }
 `;
 
-const CardImage = styled.img`
+const CardImage = styled(motion.div)`
+  flex: 1;
   width: 100%;
-  height: 140px;
-  object-fit: cover;
-  object-position: top;
+  height: 150px;
+  background: url(${(props) => props.src}) center/cover no-repeat;
+  transition: transform 0.3s;
 
-  @media (max-width: 768px) {
-    height: 130px;
+  &:hover {
+    transform: scale(1.1);
   }
 `;
 
 const CardContent = styled.div`
-  padding: 15px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
+  padding: 10px 15px;
 `;
 
 const CardTitle = styled.h2`
   font-size: 1.3rem;
-  margin: 0 0 10px 0;
+  margin-bottom: 5px;
   color: #ffe600;
 
   @media (max-width: 768px) {
@@ -141,7 +137,7 @@ const CardFooter = styled.div`
   justify-content: flex-end;
 `;
 
-const ViewDetails = styled.span`
+const ViewDetails = styled(motion.span)`
   color: #fff;
   font-weight: bold;
   font-size: 0.95rem;
@@ -152,10 +148,16 @@ const ViewDetails = styled.span`
   &:after {
     content: "→";
     font-size: 1rem;
+    display: inline-block;
+    transition: transform 0.3s;
   }
 
   &:hover {
     color: #ff4e50;
+
+    &:after {
+      transform: translateX(5px);
+    }
   }
 `;
 
@@ -182,27 +184,28 @@ const Button = styled(motion.button)`
   }
 `;
 
-function EventsPage() {
+// ----- Animations -----
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 50, scale: 0.9 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 6, ease: "easeOut" } },
+};
+
+export default function EventsPage() {
   const navigate = useNavigate();
-  const [activeEvent, setActiveEvent] = useState(null); // store event key
+  const [activeEvent, setActiveEvent] = useState(null);
 
   const events = [
-    { id: 1, title: "Paper Presentation", img: presentationImg, component: PaperPresentation },
-    { id: 2, title: "Technical Quiz", img: techicalquizimg, component: TechnicalQuiz },
+    { id: 1, title: "Paperenza", img: presentationImg, component: PaperPresentation },
+    { id: 2, title: "Technical Quiz", img: technicalquizimg, component: TechnicalQuiz },
     { id: 3, title: "Coding & Debugging", img: codeanddebugimg, component: CodingDebugging },
-    { id: 4, title: "Poster Design", img: posterdesignimg, component: PosterDesign },
-    { id: 5, title: "Innovathon", img: innovathonimg, component: Innovathon },
+    { id: 4, title: "Tech Talks", img: posterdesignimg, component: PosterDesign },
+    { id: 5, title: "Code Craze", img: innovathonimg, component: Innovathon },
   ];
-
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.2 } },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
 
   return (
     <PageWrapper>
@@ -227,7 +230,7 @@ function EventsPage() {
             variants={cardVariants}
             whileHover={{ scale: 1.05 }}
           >
-            <CardImage src={event.img} alt={event.title} />
+            <CardImage src={event.img} />
             <CardContent>
               <CardTitle>{event.title}</CardTitle>
               <CardFooter>
@@ -240,15 +243,13 @@ function EventsPage() {
 
       {/* Animated Popups */}
       <AnimatePresence>
-        {activeEvent && (() => {
-          const EventComponent = events.find(e => e.id === activeEvent)?.component;
-          return EventComponent ? (
-            <EventComponent
-              isOpen={true}
-              onClose={() => setActiveEvent(null)}
-            />
-          ) : null;
-        })()}
+        {activeEvent &&
+          (() => {
+            const EventComponent = events.find((e) => e.id === activeEvent)?.component;
+            return EventComponent ? (
+              <EventComponent isOpen={true} onClose={() => setActiveEvent(null)} />
+            ) : null;
+          })()}
       </AnimatePresence>
 
       <Button
@@ -261,5 +262,3 @@ function EventsPage() {
     </PageWrapper>
   );
 }
-
-export default EventsPage;

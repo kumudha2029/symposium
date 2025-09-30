@@ -7,19 +7,17 @@ const SidebarWrapper = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-  width: 160px;
+  width: 180px;
   height: 100vh;
-  background: #394ca2ff;
+  background: url("/popback.jpg") center/cover no-repeat; /* updated */
+  opacity :0.8;
   color: #fff;
   z-index: 1000;
   padding: 60px 20px;
   display: flex;
   flex-direction: column;
-
-  @media (min-width: 769px) {
-    display: none;
-  }
 `;
+
 
 const CloseButton = styled(motion.button)`
   background: none;
@@ -28,6 +26,7 @@ const CloseButton = styled(motion.button)`
   color: #fff;
   cursor: pointer;
   align-self: flex-end;
+  margin-bottom: 20px;
 `;
 
 const NavItem = styled(motion.div)`
@@ -82,8 +81,9 @@ export default function Sidebar({ sectionRefs, isOpen, toggleSidebar }) {
     <SidebarWrapper
       variants={sidebarVariants}
       initial="hidden"
-      animate={isOpen ? "visible" : "hidden"}
+      animate={isOpen ? "visible" : "hidden"} // 👈 only opens when isOpen is true
     >
+      {/* Close button inside sidebar */}
       <CloseButton
         onClick={() => toggleSidebar(false)}
         whileHover={{ scale: 1.3, rotate: 10 }}

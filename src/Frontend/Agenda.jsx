@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-// ----- Section Wrapper -----
 const Section = styled.section`
   width: 100%;
-  height: 100vh; 
+  min-height: 100vh;
   position: relative;
   padding: 60px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
 `;
 
-// Background Video
 const VideoBackground = styled.video`
   position: absolute;
   top: 0;
@@ -24,18 +22,6 @@ const VideoBackground = styled.video`
   z-index: -1;
 `;
 
-// Overlay for readability
-const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.45); /* darken video slightly */
-  z-index: -1;
-`;
-
-// Content overlay
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 10;
@@ -45,15 +31,12 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-// Title
 const Title = styled.h2`
-  color: #ffeb3b; /* bright yellow for contrast */
-  font-size: 2.3rem;
+  color: #ffeb3b;
+  font-size: 2.5rem;
   margin: 0 auto 40px auto;
-  padding: 0 10px;
   text-align: center;
   font-family: "Snap ITC", cursive, sans-serif;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -61,103 +44,123 @@ const Title = styled.h2`
   }
 `;
 
-// Scrollable timeline container
-const TimelineWrapper = styled.div`
+const CardGrid = styled.div`
+  display: grid;
+  gap: 40px;
   width: 100%;
   max-width: 500px;
-  height: 75vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  padding-right: 10px;
+  grid-template-columns: 1fr;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 3px;
+  @media (max-width: 768px) {
+    max-width: 150px;
   }
 `;
 
-// Single timeline item
-const TimelineItem = styled.div`
+const CardContainer = styled.div`
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Card = styled(motion.div)`
+  width: 100%;
+  min-height: 100px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.27, 1.55);
+`;
+
+const CardFace = styled(motion.div)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  transform-origin: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
 `;
 
-// Circle for time
-const TimeCircle = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+const FrontCard = styled(CardFace)`
   background: linear-gradient(135deg, #ff4e50, #f9d423);
+  color: #fff;
+  font-size: 1rem;
+`;
+
+const BackCard = styled(CardFace)`
+  background: transparent; // overlay removed
+  color: #fff;
+  transform: rotateY(180deg);
+  font-size: 1rem;
+`;
+
+const TimeCircle = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
   margin-bottom: 10px;
-  flex-shrink: 0;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-`;
-
-// Rectangular box for event
-const EventBox = styled.div`
-  width: 100%;
-  padding: 15px 20px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  color: #fff;
   font-weight: bold;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.35);
-
-  @media (max-width: 768px) {
-    padding: 12px 15px;
-    font-size: 0.95rem;
-  }
+  font-size: 0.9rem;
 `;
 
 export default function Agenda() {
   const schedule = [
-    { time: "9:00 AM", event: "Registration & Welcome" },
-    { time: "10:00 AM", event: "Opening Ceremony" },
-    { time: "11:00 AM", event: "Technical Workshops" },
-    { time: "1:00 PM", event: "Lunch Break" },
-    { time: "2:00 PM", event: "Paper Presentations" },
-    { time: "4:00 PM", event: "Competitions & Activities" },
-    { time: "5:00 PM", event: "Closing Ceremony" },
+    { time: "9:00 AM", event: "Registration & Welcome", details: "Meet & greet, collect badges" },
+    { time: "10:00 AM", event: "Opening Ceremony", details: "Introduction & keynote" },
+    { time: "11:00 AM", event: "Technical Workshops", details: "Hands-on learning sessions" },
+    { time: "1:00 PM", event: "Lunch Break", details: "Buffet lunch provided" },
+    { time: "2:00 PM", event: "Paper Presentations", details: "Students showcase research papers" },
+    { time: "4:00 PM", event: "Competitions & Activities", details: "Coding, quizzes & games" },
+    { time: "5:00 PM", event: "Closing Ceremony", details: "Awards and wrap-up" },
   ];
+
+  const [flipped, setFlipped] = useState({});
+
+  const handleFlip = (index) => {
+    setFlipped((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
 
   return (
     <Section>
-      {/* Video Background */}
       <VideoBackground autoPlay loop muted playsInline>
         <source src="/BackgroundVideo.mp4" type="video/mp4" />
       </VideoBackground>
-      <Overlay />
 
       <ContentWrapper>
         <Title>Agenda</Title>
-        <TimelineWrapper>
+        <CardGrid>
           {schedule.map((item, index) => {
             const [time, meridiem] = item.time.split(" ");
             return (
-              <TimelineItem key={index}>
-                <TimeCircle>
-                  <div style={{ fontSize: "16px", fontWeight: "bold" }}>{time}</div>
-                  <div style={{ fontSize: "12px", fontWeight: "normal" }}>{meridiem}</div>
-                </TimeCircle>
-                <EventBox>{item.event}</EventBox>
-              </TimelineItem>
+              <CardContainer key={index} onClick={() => handleFlip(index)}>
+                <Card animate={{ rotateY: flipped[index] ? 180 : 0 }}>
+                  <FrontCard>
+                    <TimeCircle>
+                      <div>{time}</div>
+                      <div style={{ fontSize: "0.7rem" }}>{meridiem}</div>
+                    </TimeCircle>
+                    <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>Click for event</div>
+                  </FrontCard>
+                  <BackCard>
+                    <div>{item.event}</div>
+                    <div style={{ fontSize: "0.85rem", marginTop: "8px" }}>{item.details}</div>
+                  </BackCard>
+                </Card>
+              </CardContainer>
             );
           })}
-        </TimelineWrapper>
+        </CardGrid>
       </ContentWrapper>
     </Section>
   );

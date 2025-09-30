@@ -19,7 +19,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
+  background: rgba(0, 0, 0, 0.5);
   z-index: -1;
 `;
 
@@ -27,7 +27,7 @@ const Overlay = styled.div`
 const PageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
   display: flex;
@@ -49,12 +49,14 @@ const FormWrapper = styled.div`
   max-height: 90vh;
   margin-top: 60px;
 
-  @media (max-width: 600px) {
-    padding: 10px 15px;
+  @media (max-width: 480px) {
+    width: 90%;
+    max-width: none;
+    padding: 15px;
+    margin-top: 40px;
   }
 `;
 
-// ----- Titles -----
 const Title = styled.h1`
   text-align: center;
   margin-bottom: 20px;
@@ -143,6 +145,12 @@ const BackButton = styled.button`
     transform: scale(1.05);
     background: linear-gradient(45deg, #f9d423, #ff4e50);
   }
+
+  @media (max-width: 480px) {
+    right: 20px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
 `;
 
 // ----- Congrats Box -----
@@ -154,6 +162,11 @@ const CongratsBox = styled.div`
   max-width: 500px;
   width: 100%;
   margin-top: 80px;
+
+  @media (max-width: 480px) {
+    width: 90%;
+    margin-top: 60px;
+  }
 `;
 
 const CongratsTitle = styled.h1`
@@ -221,10 +234,22 @@ function RegistrationPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isOtherCollege, setIsOtherCollege] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCollegeChange = (e) => {
+    const value = e.target.value;
+    if (value === "Other") {
+      setIsOtherCollege(true);
+      setFormData({ ...formData, college: "" });
+    } else {
+      setIsOtherCollege(false);
+      setFormData({ ...formData, college: value });
+    }
   };
 
   const handleCheckboxChange = (e) => {
@@ -245,7 +270,7 @@ function RegistrationPage() {
 
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycby6-dwzaHdxmMT7Pno5SRXLoqfd7gH5gCIppU_-L8G4VospmrS2h9uW2X1ZSyfMAlM_uQ/exec",
+        "https://script.google.com/macros/s/AKfycbyFTl9pFS8YAN86WmTyn0-rXIOxSFlfjI1isVG1Vz7HAXB9v7IwhS-VZ6OPzepzSQan9w/exec",
         {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=UTF-8" },
@@ -274,30 +299,64 @@ function RegistrationPage() {
         <FormWrapper>
           <Title>Event Registration</Title>
           <form onSubmit={handleSubmit}>
-            <Label>Name *</Label>
+            <Label>Name</Label>
             <Input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
-            <Label>Email *</Label>
+            <Label>Email</Label>
             <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
-            <Label>Gender *</Label>
+            <Label>Gender</Label>
             <Select name="gender" value={formData.gender} onChange={handleChange} required>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </Select>
+            <Label>College</Label>
+            <Select
+              name="college"
+              value={isOtherCollege ? "Other" : formData.college}
+              onChange={handleCollegeChange}
+              required={!isOtherCollege} // required only if not "Other"
+            >
+              <option value="">Select College</option>
+              <option value="C. Abdul Hakeem College of Engineering and Technology">C. Abdul Hakeem College of Engineering and Technology</option>
+              <option value="Annai Mira College of Engineering and Technology">Annai Mira College of Engineering and Technology</option>
+              <option value="Kingston Engineering College">Kingston Engineering College</option>
+              <option value="Sree Krishna College of Engineering">Sree Krishna College of Engineering</option>
+              <option value="Global Institute of Engineering and Technology">Global Institute of Engineering and Technology</option>
+              <option value="Adhiparasakthi College of Engineering">Adhiparasakthi College of Engineering</option>
+              <option value="Ranippettai Engineering College">Ranippettai Engineering College</option>
+              <option value="Saraswathi Velu College of Engineering">Saraswathi Velu College of Engineering</option>
+              <option value="Sri Nandhanam College and Technology">Sri Nandhanam College and Technology</option>
+              <option value="Podhigai College of Engineering and Technology">Podhigai College of Engineering and Technology</option>
+              <option value="Shri Sitheswarar Engineering College">Shri Sitheswarar Engineering College</option>
+              <option value="Bharathidasan Engineering College">Bharathidasan Engineering College</option>
+              <option value="Thanthai Periyar Government Institute of Technology">Thanthai Periyar Government Institute of Technology</option>
+              <option value="Sri Balaji Chockalingam Engineering College">Sri Balaji Chockalingam Engineering College</option>
+              <option value="University College of Engineering">University College of Engineering</option>
+              <option value="Arunai Engineering College">Arunai Engineering College</option>
+              <option value="Other">Other</option>
+            </Select>
 
-            <Label>College *</Label>
-            <Input type="text" name="college" value={formData.college} onChange={handleChange} required />
-
-            <Label>Degree *</Label>
+            {isOtherCollege && (
+              <Input
+                type="text"
+                name="college"
+                placeholder="Enter your college"
+                value={formData.college}
+                onChange={handleChange}
+                required // only required when input is visible
+              />
+            )}
+            
+            <Label>Degree</Label>
             <Select name="degree" value={formData.degree} onChange={handleChange} required>
               <option value="">Select Degree</option>
               <option value="B.E">B.E</option>
               <option value="B.Tech">B.Tech</option>
             </Select>
 
-            <Label>Branch *</Label>
+            <Label>Branch</Label>
             <Select name="branch" value={formData.branch} onChange={handleChange} required>
               <option value="">Select Branch</option>
               <option value="AI & DS">AI & DS</option>
@@ -306,7 +365,7 @@ function RegistrationPage() {
               <option value="IT">IT</option>
             </Select>
 
-            <Label>Year *</Label>
+            <Label>Year</Label>
             <Select name="year" value={formData.year} onChange={handleChange} required>
               <option value="">Select Year</option>
               <option value="I">I</option>
@@ -315,12 +374,12 @@ function RegistrationPage() {
               <option value="IV">IV</option>
             </Select>
 
-            <Label>Phone *</Label>
+            <Label>Phone</Label>
             <Input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
 
-            <Label>Events *</Label>
+            <Label>Events</Label>
             <CheckboxWrapper>
-              {["Poster Presentation", "Innovathon", "Coding & Debugging", "Paper Presentation"].map((event) => (
+              {["Paperenza", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Code Craze"].map((event) => (
                 <label key={event}>
                   <input
                     type="checkbox"

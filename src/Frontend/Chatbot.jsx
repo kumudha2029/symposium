@@ -1,219 +1,188 @@
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import { TbRobot } from "react-icons/tb"; // Sleek robot icon
+import styled from "styled-components";
+import { FaRobot } from "react-icons/fa";
 
-// Pulse animation for floating button
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-`;
-
-// Floating chat button
-const ChatButton = styled.button`
+const ChatbotWrapper = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 1000;
+`;
+
+const ChatIcon = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  background: #394ca2ff;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
-  animation: ${pulse} 2s infinite ease-in-out;
-`;
-
-// Slide-in animation for chat window
-const slideUp = keyframes`
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
 `;
 
 const ChatWindow = styled.div`
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  height: 400px;
+  width: 320px;
+  height: 420px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: ${slideUp} 0.4s ease-out;
-  z-index: 999;
 `;
 
-// Chat header
-const ChatHeader = styled.div`
-  background: #4a90e2;
+const Header = styled.div`
+  background: #394ca2ff;
   color: white;
-  padding: 10px;
+  padding: 12px;
+  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
 `;
 
-// Chat body
-const ChatBody = styled.div`
+const Messages = styled.div`
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   overflow-y: auto;
   font-size: 14px;
-  display: flex;
-  flex-direction: column;
 `;
 
-// Chat input
-const ChatInput = styled.input`
+const InputBox = styled.input`
   border: none;
-  border-top: 1px solid #ddd;
   padding: 10px;
   width: 100%;
+  border-top: 1px solid #ddd;
   outline: none;
+  font-size: 14px;
 `;
 
-// Message bubble
-const Message = styled.div`
-  margin: 5px 0;
-  padding: 8px 12px;
-  border-radius: 10px;
-  max-width: 80%;
-  background: ${(props) => (props.user ? "#4a90e2" : "#eee")};
-  color: ${(props) => (props.user ? "white" : "black")};
-  align-self: ${(props) => (props.user ? "flex-end" : "flex-start")};
-`;
-
-// Option buttons
 const OptionButton = styled.button`
-  margin: 5px 5px 0 0;
-  padding: 6px 10px;
+  margin: 6px 6px 0 0;
+  padding: 8px 14px;
   border: none;
   border-radius: 8px;
-  background: #4a90e2;
+  background: #394ca2ff;
   color: white;
   cursor: pointer;
   font-size: 13px;
+
+  &:hover {
+    background: #2d3888;
+  }
 `;
 
-const Chatbot = () => {
+export default function Chatbot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { from: "bot", text: "Hi! 👋 Please type 'hi' to start the chat." },
+  ]);
   const [input, setInput] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
   const handleSend = (e) => {
     if (e.key === "Enter" && input.trim()) {
-      const newMessages = [...messages, { text: input, user: true }];
-      setMessages(newMessages);
+      const userText = input.trim().toLowerCase();
+      let newMessages = [...messages, { from: "user", text: input }];
 
-      if (input.toLowerCase() === "hi") {
-        setMessages([
-          ...newMessages,
-          { text: "Welcome! What do you want to know about?", user: false },
-        ]);
+      if (userText === "hi") {
+        newMessages.push({
+          from: "bot",
+          text: "Welcome to the Symposium 🎉 What do you want to do?",
+        });
         setShowOptions(true);
+      } else {
+        newMessages.push({
+          from: "bot",
+          text: "Please type 'hi' to start.",
+        });
+        setShowOptions(false);
       }
+
+      setMessages(newMessages);
       setInput("");
     }
   };
 
   const handleOption = (option) => {
-    let response = "";
-    if (option === "Registration Form") {
-      response =
-        "To fill the registration form, go to the Register section and enter your details carefully.";
-    } else if (option === "Event") {
-      response =
-        "The event will be held on campus. Check the schedule for timing and venue.";
-    } else if (option === "Other") {
-      response =
-        "Sorry, please mail your question to support@college.com — our team will clarify it for you.";
-    } else {
-      response = "More details coming soon!";
+    let newMessages = [...messages, { from: "user", text: option }];
+    if (option === "Explore Events") {
+      newMessages.push({
+        from: "bot",
+        text:
+          "🎭 You can explore all events on our website. (Here you can add your events link)\n\n👉 Explore Events\n👉 Register",
+      });
+    } else if (option === "Register") {
+      newMessages.push({
+        from: "bot",
+        text: `📝 To register, please provide the following in one message:\n
+1️⃣ FULL NAME (CAPS) followed by initial  
+2️⃣ Team Members (if any)  
+3️⃣ One Working Email 📧  
+4️⃣ One Working Phone Number 📱  
+5️⃣ Full College Name 🏫  
+6️⃣ Your Feedback 💬\n\n👉 Explore Events\n👉 Register`,
+      });
     }
-
-    setMessages([
-      ...messages,
-      { text: option, user: true },
-      { text: response, user: false },
-    ]);
-    setShowOptions(false);
+    setMessages(newMessages);
+    setShowOptions(true);
   };
 
   return (
-    <>
+    <ChatbotWrapper>
       {!open && (
-        <ChatButton onClick={() => setOpen(true)}>
-          <span><TbRobot size={28} color="white" /></span>
-        </ChatButton>
+        <ChatIcon onClick={() => setOpen(true)}>
+          <FaRobot />
+        </ChatIcon>
       )}
-
       {open && (
         <ChatWindow>
-          <ChatHeader>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <TbRobot size={20} /> Chatbot
-            </div>
-            <button
-              onClick={() => setOpen(false)}
-              style={{
-                background: "none",
-                border: "none",
-                color: "white",
-                fontSize: "18px",
-                cursor: "pointer",
-              }}
-            >
-              ❌
-            </button>
-          </ChatHeader>
-
-          {/* Hint line */}
-          <div
-            style={{
-              fontSize: "12px",
-              color: "#666",
-              padding: "6px 10px",
-              borderBottom: "1px solid #eee",
-            }}
-          >
-            Enter 'hi' to start the chat
-          </div>
-
-          <ChatBody>
-            {messages.map((msg, index) => (
-              <Message key={index} user={msg.user}>
-                {msg.text}
-              </Message>
+          <Header>
+            Symposium Chatbot
+            <span style={{ cursor: "pointer" }} onClick={() => setOpen(false)}>
+              ✖
+            </span>
+          </Header>
+          <Messages>
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                style={{
+                  textAlign: msg.from === "bot" ? "left" : "right",
+                  margin: "6px 0",
+                }}
+              >
+                <span
+                  style={{
+                    background: msg.from === "bot" ? "#f1f1f1" : "#394ca2ff",
+                    color: msg.from === "bot" ? "#000" : "#fff",
+                    padding: "8px 12px",
+                    borderRadius: "12px",
+                    display: "inline-block",
+                    maxWidth: "80%",
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {msg.text}
+                </span>
+              </div>
             ))}
 
             {showOptions && (
-              <div>
-                <OptionButton onClick={() => handleOption("Registration Form")}>
-                  Registration Form
+              <div style={{ marginTop: "8px" }}>
+                <OptionButton onClick={() => handleOption("Explore Events")}>
+                  👉 Explore Events
                 </OptionButton>
-                <OptionButton onClick={() => handleOption("Event")}>
-                  Event
-                </OptionButton>
-                <OptionButton onClick={() => handleOption("Other")}>
-                  Other
+                <OptionButton onClick={() => handleOption("Register")}>
+                  👉 Register
                 </OptionButton>
               </div>
             )}
-          </ChatBody>
-
-          <ChatInput
-            type="text"
+          </Messages>
+          <InputBox
             placeholder="Type 'hi' to start..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -221,8 +190,6 @@ const Chatbot = () => {
           />
         </ChatWindow>
       )}
-    </>
+    </ChatbotWrapper>
   );
-};
-
-export default Chatbot;
+}
