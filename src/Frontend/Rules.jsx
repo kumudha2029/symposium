@@ -57,7 +57,7 @@ const RuleList = styled.ul`
 
 const RuleItem = styled.li`
   margin: 10px 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   z-index: 2;
 `;
 

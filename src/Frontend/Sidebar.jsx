@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FaHome, FaCalendarAlt, FaListAlt, FaEnvelope, FaRegClipboard } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaListAlt, FaEnvelope, FaRegClipboard, FaImages } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const SidebarWrapper = styled(motion.div)`
@@ -9,15 +9,14 @@ const SidebarWrapper = styled(motion.div)`
   left: 0;
   width: 180px;
   height: 100vh;
-  background: url("/popback.jpg") center/cover no-repeat; /* updated */
-  opacity :0.8;
+  background: url("/popback.jpg") center/cover no-repeat;
+  opacity: 0.8;
   color: #fff;
   z-index: 1000;
   padding: 60px 20px;
   display: flex;
   flex-direction: column;
 `;
-
 
 const CloseButton = styled(motion.button)`
   background: none;
@@ -33,7 +32,7 @@ const NavItem = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 15px;
+  padding: 8px 15px;
   margin: 12px 0;
   cursor: pointer;
   border-radius: 12px;
@@ -48,8 +47,9 @@ const NavItem = styled(motion.div)`
   }
 `;
 
-const icons = [<FaHome />, <FaCalendarAlt />, <FaListAlt />, <FaEnvelope />, <FaRegClipboard />];
-const labels = ["Home", "Events", "Agenda", "Contact", "Guidelines"];
+// Added FaImages for Gallery
+const icons = [<FaHome />, <FaCalendarAlt />, <FaListAlt />, <FaEnvelope />, <FaRegClipboard />, <FaImages />];
+const labels = ["Home", "Events", "Agenda", "Contact", "Guidelines", "Gallery"];
 
 export default function Sidebar({ sectionRefs, isOpen, toggleSidebar }) {
   const scrollToSection = (i) => {
@@ -81,9 +81,8 @@ export default function Sidebar({ sectionRefs, isOpen, toggleSidebar }) {
     <SidebarWrapper
       variants={sidebarVariants}
       initial="hidden"
-      animate={isOpen ? "visible" : "hidden"} // 👈 only opens when isOpen is true
+      animate={isOpen ? "visible" : "hidden"}
     >
-      {/* Close button inside sidebar */}
       <CloseButton
         onClick={() => toggleSidebar(false)}
         whileHover={{ scale: 1.3, rotate: 10 }}

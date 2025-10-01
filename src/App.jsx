@@ -3,14 +3,14 @@ import Home from "./Frontend/Home";
 import Event from "./Frontend/Event";
 import Register from "./Frontend/Register";
 import Contact from "./Frontend/Contact";
-import Gallary from "./Frontend/Gallary"
+import Gallary from "./Frontend/Gallery";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App(){
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Gallary/>} />
+        <Route path="/" element={<Home/>} />
         <Route path="/Event" element={<Event />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Contact" element={<Contact />} />

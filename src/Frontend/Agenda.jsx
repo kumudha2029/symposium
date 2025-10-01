@@ -64,7 +64,7 @@ const CardContainer = styled.div`
 
 const Card = styled(motion.div)`
   width: 100%;
-  min-height: 100px;
+  min-height: 50px;
   cursor: pointer;
   transform-style: preserve-3d;
   position: relative;
@@ -97,7 +97,7 @@ const BackCard = styled(CardFace)`
   background: transparent; // overlay removed
   color: #fff;
   transform: rotateY(180deg);
-  font-size: 1rem;
+  font-size: 0.9rem;
 `;
 
 const TimeCircle = styled.div`

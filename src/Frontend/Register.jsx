@@ -36,7 +36,6 @@ const PageWrapper = styled.div`
   position: relative;
 `;
 
-// ----- Form Wrapper -----
 const FormWrapper = styled.div`
   width: 100%;
   max-width: 500px;
@@ -50,7 +49,7 @@ const FormWrapper = styled.div`
   margin-top: 60px;
 
   @media (max-width: 480px) {
-    width: 90%;
+    width: 70%;
     max-width: none;
     padding: 15px;
     margin-top: 40px;

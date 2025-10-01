@@ -10,7 +10,7 @@ import Contact from "./Contact";
 import CountdownTimer from "./CountdownTimer";
 import Rules from "./Rules";
 import Sidebar from "./Sidebar";
-import Chatbot from "./Chatbot";
+import Gallery from "./Gallery"; // added gallery
 
 // ----- Background Video -----
 const VideoBackground = styled.video`
@@ -23,6 +23,7 @@ const VideoBackground = styled.video`
   z-index: -2;
 `;
 
+// Overlay
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -33,7 +34,7 @@ const Overlay = styled.div`
   background: rgba(0, 0, 0, 0.25);
 `;
 
-// ----- Page Wrapper -----
+// Page Wrapper
 const PageWrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -50,7 +51,7 @@ const PageWrapper = styled.div`
   }
 `;
 
-// ----- Section -----
+// Section
 const Section = styled(motion.section)`
   width: 100%;
   min-height: 100vh;
@@ -65,11 +66,11 @@ const Section = styled(motion.section)`
   gap: 10px;
 
   @media (max-width: 768px) {
-    padding: 0 5px;
+    padding: 0 10px;
   }
 `;
 
-// ----- Hero -----
+// Hero
 const HeroTitle = styled(motion.h1)`
   font-family: "Times New Roman", Times, serif;
   font-size: 3rem;
@@ -78,7 +79,7 @@ const HeroTitle = styled(motion.h1)`
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 `;
 
@@ -90,7 +91,7 @@ const HeroSubtitle = styled(motion.h2)`
   margin: 0;
 `;
 
-// ----- InfoBox -----
+// InfoBox
 const InfoBox = styled(motion.div)`
   background: rgba(0, 0, 0, 0.55);
   padding: 12px 25px;
@@ -117,7 +118,7 @@ const InfoBox = styled(motion.div)`
   }
 `;
 
-// ----- HeroButton -----
+// HeroButton
 const HeroButton = styled(motion.button)`
   padding: 12px 25px;
   margin-top: 5px;
@@ -142,7 +143,7 @@ const HeroButton = styled(motion.button)`
   }
 `;
 
-// ----- Logos -----
+// Logos
 const GtecLogo = styled(motion.img)`
   width: 105px;
   height: auto;
@@ -174,7 +175,8 @@ export default function Home() {
   const agendaRef = useRef();
   const contactRef = useRef();
   const rulesRef = useRef();
-  const sectionRefs = [heroRef, eventRef, agendaRef, contactRef, rulesRef];
+  const galleryRef = useRef();
+  const sectionRefs = [heroRef, eventRef, agendaRef, contactRef, rulesRef, galleryRef];
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -216,201 +218,100 @@ export default function Home() {
         muted
         playsInline
         preload="auto"
-        poster="/BackgroundPreview.jpg" // low-res placeholder
         onCanPlayThrough={() => setVideoLoaded(true)}
       >
         <source src="/BackgroundVideo.mp4" type="video/mp4" />
       </VideoBackground>
       <Overlay />
 
-      {/* Render content only when video is ready */}
-      {videoLoaded && (
-        <PageWrapper>
-          {/* Sidebar */}
-          <Sidebar
-            sectionRefs={sectionRefs}
-            isOpen={sidebarOpen}
-            toggleSidebar={setSidebarOpen}
-          />
-
-          {/* Hero Section */}
-          <Section
-            ref={heroRef}
-            initial="hidden"
-            animate="visible"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.2 } } }}
-          >
-            {/* Logo + College Name + Address */}
-            <motion.div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "2px",
-                marginTop: "40px",
-                textAlign: "center",
-              }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <GtecLogo src="/gtec.jpeg" alt="GTEC Logo" whileHover={{ scale: 1.05 }} />
-                <HeroTitle
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.5 },
-                    visible: {
-                      opacity: 1,
-                      scale: 1,
-                      transition: { type: "spring", stiffness: 200, duration: 1.2 },
-                    },
-                  }}
-                >
-                  Ganadipathy Tulsi's Jain Engineering College
-                </HeroTitle>
-              </div>
-
-              <h6
-                style={{
-                  color: "#ffffff",
-                  fontSize: "0.75rem",
-                  lineHeight: 1,
-                  margin: "0px",
-                  marginLeft: "70px",
-                  marginTop: "5px",
-                  fontFamily: "Times New Roman, Times, serif",
-                }}
-              >
-                Chittoor Cuddalore Road,<br />
-                Kaniyambadi Vellore - 632102
-              </h6>
-
-              <h6
-                style={{
-                  fontSize: "1rem",
-                  lineHeight: 1,
-                  margin: "15px 0",
-                  fontFamily: "Times New Roman, Times, serif",
-                  textAlign: "center",
-                  color: "#ffe600",
-                }}
-              >
-                The Department of IT, AIDS & CSBS <br />proudly presents
-              </h6>
-            </motion.div>
-
-            {/* National Level Technical Symposium + 25-year logo */}
-            <motion.div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "5px",
-                flexWrap: "wrap",
-                margin: "0px auto",
-                textAlign: "center",
-              }}
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <HeroSubtitle style={{ fontSize: "1.5rem", margin: "0px" }}>
-                National Level <br /> Technical Symposium
-              </HeroSubtitle>
-
-              <AnniversaryLogo
-                src="/25year.png"
-                alt="25 Years Celebration"
-                whileHover={{ scale: 1.05 }}
-              />
-            </motion.div>
-
-            <HeroSubtitle
-              style={{
-                fontSize: "3rem",
-                background: "linear-gradient(45deg, #f9d423, #ff4e50)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                margin: "0px auto 2px auto",
-                lineHeight: 1,
-              }}
-            >
-              Pinnacle 25
-            </HeroSubtitle>
-
-            <h6
-              style={{
-                color: "white",
-                fontSize: "0.9rem",
-                lineHeight: 1.1,
-                margin: "0px 0 10px 0",
-                fontFamily: "Times New Roman, Times, serif",
-                textAlign: "center",
-              }}
-            >
-              A Summit of IT, AI & Business System
-            </h6>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 3 }}>
-              <CountdownTimer />
-            </motion.div>
-
-            <InfoBox>
-              <p>📅 Date: 16th October 2025</p>
-              <p>⏰ Time: 9:00 AM – 5:00 PM</p>
-              <p>
-                📍 Location:{" "}
-                <a
-                  href="https://www.google.com/maps?q=Ganadipathy+Tulsi's+Jain+Engineering+College"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View on Google Maps
-                </a>
-              </p>
-            </InfoBox>
-
-            <motion.div
-              style={{
-                display: "flex",
-                gap: "15px",
-                marginTop: "10px",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              <HeroButton onClick={scrollToNext} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                Explore Events →
-              </HeroButton>
-
-              <HeroButton onClick={() => navigate("/Register")} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                Register
-              </HeroButton>
-            </motion.div>
-          </Section>
-
-          {/* Other Sections */}
-          <Section ref={eventRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-            <Event />
-          </Section>
-
-          <Section ref={agendaRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-            <Agenda />
-          </Section>
-
-          <Section ref={contactRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-            <Contact />
-          </Section>
-
-          <Section ref={rulesRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-            <Rules />
-          </Section>
-
-          {/* Chatbot */}
-          <Chatbot />
-        </PageWrapper>
+      {/* Video Loading Overlay */}
+      {!videoLoaded && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "#000",
+            zIndex: 10,
+          }}
+        ></div>
       )}
+
+      {/* Page Content */}
+      <PageWrapper>
+        {/* Sidebar */}
+        <Sidebar sectionRefs={sectionRefs} isOpen={sidebarOpen} toggleSidebar={setSidebarOpen} />
+
+        {/* Hero Section */}
+        <Section ref={heroRef} initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.2 } } }}>
+          {/* Hero Content */}
+          <motion.div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px", marginTop: "40px", textAlign: "center" }} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <GtecLogo src="/gtec.jpeg" alt="GTEC Logo" whileHover={{ scale: 1.05 }} />
+              <HeroTitle>Ganadipathy Tulsi's Jain Engineering College</HeroTitle>
+            </div>
+            <h6 style={{ color: "#ffffff", fontSize: "0.75rem", margin: "0px", marginLeft: "70px", marginTop: "5px", fontFamily: "Times New Roman, Times, serif" }}>
+              Chittoor Cuddalore Road,
+              Kaniyambadi Vellore - 632102
+            </h6>
+            <h6 style={{ fontSize: "1rem", lineHeight: 1, margin: "15px 0", fontFamily: "Times New Roman, Times, serif", textAlign: "center", color: "#ffe600" }}>
+              The Department of IT, AIDS & CSBS <br />proudly presents
+            </h6>
+          </motion.div>
+
+          <motion.div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", flexWrap: "wrap", margin: "0px auto", textAlign: "center" }} initial={{ opacity: 0, y: -15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+            <HeroSubtitle style={{ fontSize: "1.5rem", margin: "0px" }}>National Level <br /> Technical Symposium</HeroSubtitle>
+            <AnniversaryLogo src="/25year.png" alt="25 Years Celebration" whileHover={{ scale: 1.05 }} />
+          </motion.div>
+
+          <HeroSubtitle style={{ fontSize: "3rem", background: "linear-gradient(45deg, #f9d423, #ff4e50)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", margin: "0px auto 2px auto", lineHeight: 1 }}>
+            Pinnacle 25
+          </HeroSubtitle>
+
+          <h6 style={{ color: "white", fontSize: "0.9rem", lineHeight: 1.1, margin: "0px 0 10px 0", fontFamily: "Times New Roman, Times, serif", textAlign: "center" }}>
+            A Summit of IT, AI & Business System
+          </h6>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 3 }}>
+            <CountdownTimer />
+          </motion.div>
+
+          <InfoBox>
+            <p>📅 Date: 16th October 2025</p>
+            <p>⏰ Time: 9:00 AM – 5:00 PM</p>
+            <p>📍 Location: <a href="https://www.google.com/maps?q=Ganadipathy+Tulsi's+Jain+Engineering+College" target="_blank" rel="noopener noreferrer">View on Google Maps</a></p>
+          </InfoBox>
+
+          <motion.div style={{ display: "flex", gap: "15px", marginTop: "10px", flexWrap: "wrap", justifyContent: "center" }}>
+            <HeroButton onClick={scrollToNext} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Explore Events →</HeroButton>
+            <HeroButton onClick={() => navigate("/Register")} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>Register</HeroButton>
+          </motion.div>
+        </Section>
+
+        {/* Other Sections */}
+        <Section ref={eventRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+          <Event />
+        </Section>
+
+        <Section ref={agendaRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+          <Agenda />
+        </Section>
+
+        <Section ref={contactRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+          <Contact />
+        </Section>
+
+        <Section ref={rulesRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+          <Rules />
+        </Section>
+
+        {/* Gallery Section After Rules */}
+        <Section ref={galleryRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+          <Gallery />
+        </Section>
+      </PageWrapper>
     </>
   );
 }
