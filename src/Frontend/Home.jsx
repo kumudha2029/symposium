@@ -290,7 +290,6 @@ export default function Home() {
           </motion.div>
         </Section>
 
-        {/* Other Sections */}
         <Section ref={eventRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
           <Event />
         </Section>
@@ -307,11 +306,17 @@ export default function Home() {
           <Rules />
         </Section>
 
-        {/* Gallery Section After Rules */}
-        <Section ref={galleryRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
+        <Section
+          ref={galleryRef}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={sectionVariants}
+        >
           <Gallery />
         </Section>
       </PageWrapper>
+
     </>
   );
 }

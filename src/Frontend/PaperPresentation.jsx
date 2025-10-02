@@ -122,8 +122,8 @@ const PaperPresentation = ({ isOpen, onClose }) => (
               </li>
               <li>
                 Send your paper to the following <br /> mail id:{" "}
-                <a href="mailto:Pinnacle@gtec.ac.in">
-                  <strong>Pinnacle@gtec.ac.in</strong>
+                <a href="mailto:pinnacle@gtec.ac.in">
+                  <strong>pinnacle@gtec.ac.in</strong>
                 </a>
               </li>
               <li>
