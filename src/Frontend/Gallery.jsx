@@ -81,14 +81,14 @@ const Loader = styled.div`
 
 const Gallery = ({ isSection = false }) => {
   const images = [
-    "/images/1.jpg",
-    "/images/2.jpg",
-    "/images/3.jpg",
-    "/images/4.jpg",
-    "/images/5.jpg",
-    "/images/6.jpg",
-    "/images/7.jpg",
-    "/images/8.jpg",
+    "https://i.ibb.co/bgydGrnz/1.jpg",
+    "https://i.ibb.co/zWKc92q7/2.jpg",
+    "https://i.ibb.co/M5tvPByR/3.jpg",
+    "https://i.ibb.co/zhFV6FN6/4.jpg",
+    "https://i.ibb.co/7d1Z50LH/5.jpg",
+    "https://i.ibb.co/s9xFYvzH/6.jpg",
+    "https://i.ibb.co/CD9FzTM/7.jpg",
+    "https://i.ibb.co/rf5dcPvn/8.jpg",
   ];
 
   const [current, setCurrent] = useState(0);
@@ -103,7 +103,11 @@ const Gallery = ({ isSection = false }) => {
   }, [images.length]);
 
   // Mark loaded when video or first image is ready
-  const handleLoaded = () => setLoaded(true);
+  const handleLoaded = () => {
+    if (!loaded) {
+      setLoaded(true);
+    }
+  };
 
   return (
     <>
@@ -117,7 +121,7 @@ const Gallery = ({ isSection = false }) => {
         playsInline
         preload="auto"
         poster="/images/poster.jpg"
-        onLoadedData={handleLoaded} // triggers when video is ready
+        onLoadedData={handleLoaded}
       >
         <source src="/BackgroundVideo.mp4" type="video/mp4" />
       </VideoBackground>

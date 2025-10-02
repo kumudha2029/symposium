@@ -11,7 +11,7 @@ const Overlay = styled(motion.div)`
   height: 100vh;
   background: url("/popback.jpg") center/cover no-repeat;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   z-index: 1000;
 `;

@@ -11,7 +11,7 @@ const Overlay = styled(motion.div)`
   height: 100vh;
   background: url("/popback.jpg") center/cover no-repeat;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   z-index: 1000;
 `;
@@ -62,6 +62,7 @@ const Title = styled.h2`
   color: yellow;
   margin-bottom: 15px;
   font-family: "Snap ITC", cursive, sans-serif;
+  text-align: center;
 `;
 
 const Section = styled.div`
@@ -78,6 +79,18 @@ const AmountBox = styled.div`
   margin-top: 20px;
   font-size: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+`;
+
+const NoteBox = styled.div`
+  margin-top: 15px;
+  background: rgba(50, 28, 187, 0.8);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 `;
 
 const CloseButton = styled.button`
@@ -140,16 +153,15 @@ const PaperPresentation = ({ isOpen, onClose }) => (
           <Section>
             <h3>Topics:</h3>
             <ul>
-              <li>Cyber Security</li>
-              <li>Future of Business System</li>
+              <li>Artificial Intelligence</li>
               <li>Machine Learning</li>
               <li>Deep Learning</li>
-              <li>Data Science</li>
               <li>IOT</li>
-              <li>Future of Artificial Intelligence</li>
-              <li>Future of Information Technology</li>
+              <li>Data Science</li>
               <li>Augmented Reality / Virtual Reality</li>
-              <li>Digital Transformation</li>
+              <li>Cyber Security</li>
+              <li>Digital Transformaaation</li>
+              <li>Future trends in IT,AI & Business System</li>
             </ul>
           </Section>
 
@@ -168,6 +180,11 @@ const PaperPresentation = ({ isOpen, onClose }) => (
 
           {/* Highlighted Amount */}
           <AmountBox>💰 Registration Fee: ₹200 per Head</AmountBox>
+
+          {/* Extra Note */}
+          <NoteBox>
+           📌 By adding just ₹100 more, you can participate in all other events too!
+          </NoteBox>
 
           <CloseButton onClick={onClose}>Close</CloseButton>
         </PopupBox>
