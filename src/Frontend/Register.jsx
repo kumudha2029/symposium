@@ -234,6 +234,7 @@ function RegistrationPage() {
 
   const [submitted, setSubmitted] = useState(false);
   const [isOtherCollege, setIsOtherCollege] = useState(false);
+  const [isOtherBranch, setIsOtherBranch] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -248,6 +249,17 @@ function RegistrationPage() {
     } else {
       setIsOtherCollege(false);
       setFormData({ ...formData, college: value });
+    }
+  };
+
+  const handleBranchChange = (e) => {
+    const value = e.target.value;
+    if (value === "Other") {
+      setIsOtherBranch(true);
+      setFormData({ ...formData, branch: "" });
+    } else {
+      setIsOtherBranch(false);
+      setFormData({ ...formData, branch: value });
     }
   };
 
@@ -310,12 +322,13 @@ function RegistrationPage() {
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </Select>
+
             <Label>College</Label>
             <Select
               name="college"
               value={isOtherCollege ? "Other" : formData.college}
               onChange={handleCollegeChange}
-              required={!isOtherCollege} // required only if not "Other"
+              required={!isOtherCollege}
             >
               <option value="">Select College</option>
               <option value="C. Abdul Hakeem College of Engineering and Technology">C. Abdul Hakeem College of Engineering and Technology</option>
@@ -344,10 +357,10 @@ function RegistrationPage() {
                 placeholder="Enter your college"
                 value={formData.college}
                 onChange={handleChange}
-                required // only required when input is visible
+                required
               />
             )}
-            
+
             <Label>Degree</Label>
             <Select name="degree" value={formData.degree} onChange={handleChange} required>
               <option value="">Select Degree</option>
@@ -356,13 +369,30 @@ function RegistrationPage() {
             </Select>
 
             <Label>Branch</Label>
-            <Select name="branch" value={formData.branch} onChange={handleChange} required>
+            <Select
+              name="branch"
+              value={isOtherBranch ? "Other" : formData.branch}
+              onChange={handleBranchChange}
+              required={!isOtherBranch}
+            >
               <option value="">Select Branch</option>
               <option value="AI & DS">AI & DS</option>
               <option value="CS & BS">CS & BS</option>
               <option value="CSE">CSE</option>
               <option value="IT">IT</option>
+              <option value="Other">Other</option>
             </Select>
+
+            {isOtherBranch && (
+              <Input
+                type="text"
+                name="branch"
+                placeholder="Enter your branch"
+                value={formData.branch}
+                onChange={handleChange}
+                required
+              />
+            )}
 
             <Label>Year</Label>
             <Select name="year" value={formData.year} onChange={handleChange} required>
