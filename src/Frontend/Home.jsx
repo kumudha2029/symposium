@@ -261,7 +261,7 @@ export default function Home() {
                 color: "#ffe600",
               }}
             >
-              The Department of IT, AIDS & CSBS <br />
+              The Department of IT, AI&DS and CSBS <br />
               proudly presents
             </h6>
           </motion.div>

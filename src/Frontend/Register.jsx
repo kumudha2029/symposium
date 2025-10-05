@@ -311,10 +311,10 @@ function RegistrationPage() {
           <Title>Event Registration</Title>
           <form onSubmit={handleSubmit}>
             <Label>Name</Label>
-            <Input type="text" name="name" value={formData.name} onChange={handleChange} required />
+            <Input type="text" name="name" placeholder="partipant 1 , participant 2" value={formData.name} onChange={handleChange} required />
 
             <Label>Email</Label>
-            <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            <Input type="email" name="email" placeholder="partipant 1 Email, participant 2 Email"value={formData.email} onChange={handleChange} required />
 
             <Label>Gender</Label>
             <Select name="gender" value={formData.gender} onChange={handleChange} required>
