@@ -110,7 +110,7 @@ const PaperPresentation = ({ isOpen, onClose }) => (
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Title>Code Craze</Title>
+          <Title>Crypto Crack</Title>
 
           {/* Rules Section */}
           <Section>

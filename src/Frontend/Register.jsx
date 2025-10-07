@@ -408,7 +408,7 @@ function RegistrationPage() {
 
             <Label>Events</Label>
             <CheckboxWrapper>
-              {["Paperenza", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Code Craze"].map((event) => (
+              {["Paper Presentation", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Crypto Crack"].map((event) => (
                 <label key={event}>
                   <input
                     type="checkbox"

@@ -112,7 +112,7 @@ const PaperPresentation = ({ isOpen, onClose }) => (
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Title>Papernza</Title>
+          <Title>Paper Presentation</Title>
 
           {/* Rules Section */}
           <Section>
@@ -155,7 +155,6 @@ const PaperPresentation = ({ isOpen, onClose }) => (
             </ul>
           </Section>
 
-          {/* Paper Format Section */}
           <Section>
             <h3>Paper Format:</h3>
             <ul>
