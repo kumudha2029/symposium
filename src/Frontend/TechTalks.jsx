@@ -116,7 +116,7 @@ const PaperPresentation = ({ isOpen, onClose }) => (
           <Section>
             <h3>Rules:</h3>
             <ul>
-              <li>Individual / Team (Max Two Students).</li>
+              <li>Individual Participants Only</li>
               <li>
                 Topics Will Be Provided on The Spot.
               </li>

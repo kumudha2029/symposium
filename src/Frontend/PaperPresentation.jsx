@@ -142,15 +142,16 @@ const PaperPresentation = ({ isOpen, onClose }) => (
           <Section>
             <h3>Topics:</h3>
             <ul>
-              <li>Artificial Intelligence</li>
-              <li>Machine Learning</li>
-              <li>Deep Learning</li>
+              <li>AI/ML</li>
+              <li>Cloud and Edge Computing</li>
+              <li>Quantum Computing</li>
               <li>IOT</li>
-              <li>Data Science</li>
+              <li>Bussiness Intelligence and Analytics</li>
               <li>Augmented Reality / Virtual Reality</li>
               <li>Cyber Security</li>
               <li>Digital Transformaaation</li>
               <li>Future trends in IT,AI & Business System</li>
+               <li>Digital Sustainability & Ethics</li>
             </ul>
           </Section>
 

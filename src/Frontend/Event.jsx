@@ -200,11 +200,11 @@ export default function EventsPage() {
   const [activeEvent, setActiveEvent] = useState(null);
 
   const events = [
-    { id: 1, title: "Paperenza", img: presentationImg, component: PaperPresentation },
+    { id: 1, title: "Paper Presentation", img: presentationImg, component: PaperPresentation },
     { id: 2, title: "Technical Quiz", img: technicalquizimg, component: TechnicalQuiz },
     { id: 3, title: "Coding & Debugging", img: codeanddebugimg, component: CodingDebugging },
     { id: 4, title: "Tech Talks", img: posterdesignimg, component: PosterDesign },
-    { id: 5, title: "Code Craze", img: innovathonimg, component: Innovathon },
+    { id: 5, title: "Crypto Crack", img: innovathonimg, component: Innovathon },
   ];
 
   return (
