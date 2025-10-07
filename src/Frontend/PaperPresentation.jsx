@@ -81,17 +81,6 @@ const AmountBox = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 `;
 
-const NoteBox = styled.div`
-  margin-top: 15px;
-  background: rgba(50, 28, 187, 0.8);
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 10px 14px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-`;
 
 const CloseButton = styled.button`
   margin-top: 20px;
@@ -180,12 +169,6 @@ const PaperPresentation = ({ isOpen, onClose }) => (
 
           {/* Highlighted Amount */}
           <AmountBox>💰 Registration Fee: ₹200 per Head</AmountBox>
-
-          {/* Extra Note */}
-          <NoteBox>
-           📌 By adding just ₹100 more, you can participate in all other events too!
-          </NoteBox>
-
           <CloseButton onClick={onClose}>Close</CloseButton>
         </PopupBox>
       </Overlay>
