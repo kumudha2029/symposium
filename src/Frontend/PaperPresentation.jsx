@@ -145,7 +145,7 @@ const PaperPresentation = ({ isOpen, onClose }) => (
               <li>AI/ML</li>
               <li>Cloud and Edge Computing</li>
               <li>Quantum Computing</li>
-              <li>IOT</li>
+              <li>Internet of Things(IOT)</li>
               <li>Bussiness Intelligence and Analytics</li>
               <li>Augmented Reality / Virtual Reality</li>
               <li>Cyber Security</li>
