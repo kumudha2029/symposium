@@ -68,7 +68,6 @@ const Title = styled.h1`
   }
 `;
 
-// ----- Input Elements -----
 const Label = styled.label`
   display: block;
   margin-bottom: 5px;
@@ -100,14 +99,12 @@ const CheckboxWrapper = styled.div`
 
   label {
     font-size: 0.9rem;
-
     @media (max-width: 480px) {
       font-size: 0.85rem;
     }
   }
 `;
 
-// ----- Buttons -----
 const Button = styled.button`
   padding: 12px 20px;
   border: none;
@@ -152,7 +149,6 @@ const BackButton = styled.button`
   }
 `;
 
-// ----- Congrats Box -----
 const CongratsBox = styled.div`
   text-align: center;
   font-family: "Poppins", sans-serif;
@@ -232,7 +228,7 @@ function RegistrationPage() {
     events: [],
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | loading | success
   const [isOtherCollege, setIsOtherCollege] = useState(false);
   const [isOtherBranch, setIsOtherBranch] = useState(false);
 
@@ -277,7 +273,8 @@ function RegistrationPage() {
       alert("Please select at least one event!");
       return;
     }
-    setSubmitted(true);
+
+    setStatus("loading");
 
     try {
       const response = await fetch(
@@ -289,12 +286,16 @@ function RegistrationPage() {
         }
       );
       const result = await response.json();
-      if (result.status !== "success") {
+      if (result.status === "success") {
+        setStatus("success");
+      } else {
         alert("Something went wrong with registration!");
+        setStatus("idle");
       }
     } catch (error) {
       console.error(error);
       alert("Error connecting to Google Sheets!");
+      setStatus("idle");
     }
   };
 
@@ -306,15 +307,30 @@ function RegistrationPage() {
       <Overlay />
       <BackButton onClick={() => navigate("/")}>⬅ Back</BackButton>
 
-      {!submitted ? (
+      {status === "idle" && (
         <FormWrapper>
           <Title>Event Registration</Title>
           <form onSubmit={handleSubmit}>
             <Label>Name</Label>
-            <Input type="text" name="name" placeholder="partipant 1 , participant 2" value={formData.name} onChange={handleChange} required />
+            <Input
+              type="text"
+              name="name"
+              placeholder="participant 1 , participant 2"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
 
             <Label>Email</Label>
-            <Input type="email" name="email" placeholder="partipant 1 Email, participant 2 Email"value={formData.email} onChange={handleChange} required />
+            <Input
+              type="email"
+              name="email"
+              placeholder="participant 1 Email, participant 2 Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              multiple
+            />
 
             <Label>Gender</Label>
             <Select name="gender" value={formData.gender} onChange={handleChange} required>
@@ -323,7 +339,7 @@ function RegistrationPage() {
               <option value="Female">Female</option>
             </Select>
 
-            <Label>College</Label>
+           <Label>College</Label>
             <Select
               name="college"
               value={isOtherCollege ? "Other" : formData.college}
@@ -408,23 +424,34 @@ function RegistrationPage() {
 
             <Label>Events</Label>
             <CheckboxWrapper>
-              {["Paper Presentation", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Crypto Crack"].map((event) => (
-                <label key={event}>
-                  <input
-                    type="checkbox"
-                    value={event}
-                    checked={formData.events.includes(event)}
-                    onChange={handleCheckboxChange}
-                  />
-                  {event}
-                </label>
-              ))}
+              {["Paper Presentation", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Crypto Crack"].map(
+                (event) => (
+                  <label key={event}>
+                    <input
+                      type="checkbox"
+                      value={event}
+                      checked={formData.events.includes(event)}
+                      onChange={handleCheckboxChange}
+                    />
+                    {event}
+                  </label>
+                )
+              )}
             </CheckboxWrapper>
 
             <Button type="submit">Register</Button>
           </form>
         </FormWrapper>
-      ) : (
+      )}
+
+      {status === "loading" && (
+        <CongratsBox>
+          <CongratsTitle>⏳ Registering...</CongratsTitle>
+          <CongratsText>Please wait while we confirm your registration.</CongratsText>
+        </CongratsBox>
+      )}
+
+      {status === "success" && (
         <CongratsBox>
           <CongratsTitle>🎉 Congratulations {formData.name}!</CongratsTitle>
           <CongratsText>
