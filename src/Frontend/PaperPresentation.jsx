@@ -1,55 +1,102 @@
-// PaperPresentation.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url("/popback.jpg") center/cover no-repeat;
+// --- Styled Components ---
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  padding: 40px 20px 60px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 1000;
 `;
 
-const PopupBox = styled(motion.div)`
+const Title = styled.h1`
+  font-size: 2.5rem;
+  color: #ff9800;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
+
+const EventList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  justify-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 0 16px;
+  }
+`;
+
+const EventCard = styled.div`
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 25px;
+  width: 100%;
+  max-width: 380px;
+  box-sizing: border-box;
+  text-align: center;
   color: white;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    max-width: 97%;
+    margin: 0 auto;
+    border-radius: 14px;
+    padding: 22px 18px;
+  }
+`;
+
+const EventName = styled.h2`
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: orange;
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 1.2rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #ffd54f;
+`;
+
+const RulesList = styled.ul`
   text-align: left;
-  max-height: 80vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  @media (max-width: 480px) {
-    padding: 15px;
-    font-size: 0.9rem;
-  }
-
-  h3 {
-    color: yellow;
-    margin-bottom: 8px;
-  }
-
-  ul {
-    margin-left: 20px;
-    list-style: disc;
-  }
-
-  li {
-    margin-bottom: 5px;
-    word-break: break-word;
-  }
+  margin: 0 auto 20px;
+  padding: 0 15px;
+  line-height: 1.5;
+  list-style-type: disc;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 
   a {
-    color: #ffd700;
+    color: #ffcc80;
     text-decoration: none;
+    font-weight: 500;
 
     &:hover {
       text-decoration: underline;
@@ -57,123 +104,175 @@ const PopupBox = styled(motion.div)`
   }
 `;
 
-const Title = styled.h2`
-  font-size: 1.7rem;
-  color: yellow;
-  margin-bottom: 15px;
-  font-family: "Snap ITC", cursive, sans-serif;
-  text-align: center;
+const RuleItem = styled.li`
+  margin-bottom: 8px;
 `;
 
-const Section = styled.div`
-  margin-bottom: 15px;
-`;
-
-const AmountBox = styled.div`
-  background: linear-gradient(90deg, #ff9800, #ff5722);
-  color: #fff;
-  font-weight: bold;
-  padding: 12px 16px;
-  border-radius: 8px;
-  text-align: center;
-  margin-top: 20px;
-  font-size: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-`;
-
-
-const CloseButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #321cbbff;
+const RegisterButton = styled.button`
+  display: inline-block;
+  background: #ff9800;
   color: white;
+  padding: 12px 28px;
+  font-size: 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: 0.3s;
+  align-self: center;
 
   &:hover {
-    background: #241388;
+    background: #e68900;
+  }
+
+  &:disabled {
+    background: gray;
+    cursor: not-allowed;
   }
 `;
 
-const PaperPresentation = ({ isOpen, onClose }) => (
-  <AnimatePresence>
-    {isOpen && (
-      <Overlay
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
-        <PopupBox
-          initial={{ y: 50, opacity: 0, scale: 0.95 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
-          exit={{ y: 50, opacity: 0, scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Title>Paper Presentation</Title>
+const ContactSection = styled.div`
+  margin-top: 0px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 25px 40px;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  max-width: 420px;
+  width: 90%;
+  box-sizing: border-box;
 
-          {/* Rules Section */}
-          <Section>
-            <h3>Rules:</h3>
-            <ul>
-              <li>Individual / Team (Max Two Students).</li>
-              <li>
-                Paper Selection Will be Intimated <br /> Through Email Only
-              </li>
-              <li>
-                Send your paper to the following <br /> mail id:{" "}
-                <a href="mailto:pinnacle@gtec.ac.in">
-                  <strong>pinnacle@gtec.ac.in</strong>
-                </a>
-              </li>
-              <li>
-                Last date for submission of paper <br /> through mail - OCT 13,
-                2025
-              </li>
-              <li>
-                Presentation time: 5 min + <br /> 2 min Q&amp;A
-              </li>
-            </ul>
-          </Section>
+  a {
+    color: #ff9800;
+    text-decoration: none;
+    font-weight: bold;
 
-          {/* Topics Section */}
-          <Section>
-            <h3>Topics:</h3>
-            <ul>
-              <li>AI/ML</li>
-              <li>Cloud and Edge Computing</li>
-              <li>Quantum Computing</li>
-              <li>Internet of Things(IOT)</li>
-              <li>Bussiness Intelligence and Analytics</li>
-              <li>Augmented Reality / Virtual Reality</li>
-              <li>Cyber Security</li>
-              <li>Digital Transformaaation</li>
-              <li>Future trends in IT,AI & Business System</li>
-               <li>Digital Sustainability & Ethics</li>
-            </ul>
-          </Section>
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
-          <Section>
-            <h3>Paper Format:</h3>
-            <ul>
-              <li>Paper : A4</li>
-              <li>Format : IEEE</li>
-              <li>Max No of Pages : 10</li>
-              <li>Line Spacing : 1.5</li>
-              <li>Font type : Times New Roman</li>
-              <li>Size : 12</li>
-            </ul>
-          </Section>
+  @media (max-width: 768px) {
+    padding: 20px;
+    width: 65%;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+`;
 
-          {/* Highlighted Amount */}
-          <AmountBox>💰 Registration Fee: ₹200 per Head</AmountBox>
-          <CloseButton onClick={onClose}>Close</CloseButton>
-        </PopupBox>
-      </Overlay>
-    )}
-  </AnimatePresence>
-);
+// --- Main Component ---
+const EventsPage = () => {
+  const navigate = useNavigate();
+  const [isClosed, setIsClosed] = useState(false);
 
-export default PaperPresentation;
+  const endDate = new Date("2025-10-13T10:29:59");
+
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      setIsClosed(now >= endDate);
+    };
+
+    const interval = setInterval(checkTime, 1000);
+    checkTime();
+    return () => clearInterval(interval);
+  }, [endDate]);
+
+  const [events] = useState([
+    {
+      name: "Paper Presentation",
+      rules: [
+        "AI / ML",
+        "Cloud and Edge Computing",
+        "Cybersecurity",
+        "Internet of Things (IoT)",
+        "Blockchain",
+        "Quantum Computing",
+        "AR/VR",
+        "Digital Transformation",
+        "Business Intelligence and Analytics",
+        "Digital Sustainability & Ethics",
+        "Future Trends of IT, AI and Business Systemsentation",
+        "Individual / Team (Max Two Students).",
+        "Paper Selection Will be Intimated <br /> Through Email Only",
+        "Presentation time: 5 min + <br /> 2 min Q&amp;A",
+        'Send your abstract to the following <br /> mail id: <a href="mailto:pinnacle@gtec.ac.in"><strong>pinnacle@gtec.ac.in</strong></a> before 11th-OCT-2025 at 3:00 PM',
+      ],
+      paperFormat: [
+        "Paper : A4",
+        "Format : IEEE",
+        "Max No of Pages : 10",
+        "Line Spacing : 1.5",
+        "Font type : Times New Roman",
+        "Size : 12",
+      ],
+      formPath: "/register",
+    },
+  ]);
+
+  const handleRegister = (event) => {
+    if (!isClosed)
+      navigate(event.formPath, { state: { eventName: event.name } });
+  };
+
+  return (
+    <PageWrapper>
+      <Title>Our Events</Title>
+
+      <EventList>
+        {events.map((event, index) => (
+          <EventCard key={index}>
+            <div>
+              <EventName>{event.name}</EventName>
+
+              {/* Themes Section */}
+              <SectionTitle>Theme :</SectionTitle>
+              <RulesList>
+                {event.rules.slice(0, 11).map((theme, i) => (
+                  <RuleItem key={i}>{theme}</RuleItem>
+                ))}
+              </RulesList>
+
+              {/* Rules Section */}
+              <SectionTitle>Rules :</SectionTitle>
+              <RulesList>
+                {event.rules.slice(11).map((rule, i) => (
+                  <RuleItem
+                    key={i}
+                    dangerouslySetInnerHTML={{ __html: rule }}
+                  />
+                ))}
+              </RulesList>
+
+              {/* Paper Format Section */}
+              <SectionTitle>Paper Format :</SectionTitle>
+              <RulesList>
+                {event.paperFormat.map((format, i) => (
+                  <RuleItem key={i}>{format}</RuleItem>
+                ))}
+              </RulesList>
+            </div>
+
+            <RegisterButton
+              onClick={() => handleRegister(event)}
+              disabled={isClosed}
+            >
+              {isClosed ? "Registration Closed" : "Register"}
+            </RegisterButton>
+          </EventCard>
+        ))}
+      </EventList>
+
+      <ContactSection>
+        <p>For any queries, contact:</p>
+        <p>Dinesh K R - 📞99447 94910</p>
+        <p>JayaPrasanth - 📞93616 56105</p>
+      </ContactSection>
+    </PageWrapper>
+  );
+};
+
+export default EventsPage;

@@ -116,13 +116,18 @@ const TimeCircle = styled.div`
 
 export default function Agenda() {
   const schedule = [
-    { time: "9:00 AM", event: "Registration & Welcome", details: "Meet & greet, collect badges" },
-    { time: "10:00 AM", event: "Opening Ceremony", details: "Introduction & keynote" },
-    { time: "11:00 AM", event: "Technical Workshops", details: "Hands-on learning sessions" },
-    { time: "1:00 PM", event: "Lunch Break", details: "Buffet lunch provided" },
-    { time: "2:00 PM", event: "Paper Presentations", details: "Students showcase research papers" },
-    { time: "4:00 PM", event: "Competitions & Activities", details: "Coding, quizzes & games" },
-    { time: "5:00 PM", event: "Closing Ceremony", details: "Awards and wrap-up" },
+    { time: "9:30 AM", event: "Prayer Song & Tamil Thaaivazhthu" },
+    { time: "9:35 AM", event: "Lighting the Kuthuvilakku"},
+    { time: "9:40 AM", event: "Welcome Address by Converner"},
+    { time: "9:45 AM", event: "Presidential Address by Prinicple"},
+    { time: "9:55 AM", event: "Introduction of Cheif Guest" },
+    { time: "10:00 AM", event: "Honouring the cheif guest" },
+    { time: "10:05 AM", event: "Release of Souvenir" },
+    { time: "10:10 AM", event: "Keynote Address by cheif Guest" },
+    { time: "10:30 AM", event: "Vote of Thanks" },
+    { time: "10:45 AM", event: "Technical Event"},
+    { time: "4:00 PM", event: "Valedictory Function"},
+    { time: "4:40 PM", event: "National Anthem"},
   ];
 
   const [flipped, setFlipped] = useState({});
