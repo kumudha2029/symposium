@@ -337,6 +337,7 @@ function RegistrationPage() {
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
+              <option value="Female,Male">Female,Male</option>
             </Select>
 
            <Label>College</Label>

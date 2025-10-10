@@ -121,7 +121,7 @@ const PaperPresentation = ({ isOpen, onClose }) => (
                 Topics Will Be Provided on The Spot.
               </li>
               <li>
-                A Preparation Time of 5 Minutes Will Be Alloted Prior To The Presentation.
+                A Preparation Time of 5 Minutes Will Be Allotted Prior To The Presentation.
               </li>
               <li>
                 Each Team Should Complete Their Presentation Within 5 Minutes and The Best Presentation Wins The Prize.
