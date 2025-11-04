@@ -81,14 +81,7 @@ const Loader = styled.div`
 
 const Gallery = ({ isSection = false }) => {
   const images = [
-    "https://i.ibb.co/bgydGrnz/1.jpg",
-    "https://i.ibb.co/zWKc92q7/2.jpg",
-    "https://i.ibb.co/M5tvPByR/3.jpg",
-    "https://i.ibb.co/zhFV6FN6/4.jpg",
-    "https://i.ibb.co/7d1Z50LH/5.jpg",
-    "https://i.ibb.co/s9xFYvzH/6.jpg",
-    "https://i.ibb.co/CD9FzTM/7.jpg",
-    "https://i.ibb.co/rf5dcPvn/8.jpg",
+    
   ];
 
   const [current, setCurrent] = useState(0);

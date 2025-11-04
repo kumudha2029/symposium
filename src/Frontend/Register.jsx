@@ -278,7 +278,7 @@ function RegistrationPage() {
 
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyFTl9pFS8YAN86WmTyn0-rXIOxSFlfjI1isVG1Vz7HAXB9v7IwhS-VZ6OPzepzSQan9w/exec",
+        "https://script.google.com/macros/s/AKfycbxkUumyQSD-pGul2j3lpF6Yle66OsA7rTJyQZiV-HxDjSUIBKnDpQf2YueN-jUtcuFH/exec",
         {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=UTF-8" },

@@ -158,8 +158,8 @@ export default function Contact() {
   };
 
   const coordinators = [
-    { name: "Dinesh K R", phone: "+9199447 94910" },
-    { name: "JayaPrasanth V", phone: "+9193616 56105" },
+    { name: "coordinator 1", phone: "+91" },
+    { name: "coordinator 2", phone: "+91" },
   ];
 
   return (
@@ -182,7 +182,7 @@ export default function Contact() {
 
         <IconBar>
           <IconCard
-            href="mailto:Pinnacle@gtec.ac.in"
+            href="mailto:kumudhasri2920@gmail.com"
             title="Email"
             target="_blank"
             rel="noopener noreferrer"
@@ -195,9 +195,7 @@ export default function Contact() {
         <Address variants={itemVariants}>
           <strong>Address:</strong>
           <br />
-          Ganadipathy Tulsi's Jain Engineering College
-          <br />
-          Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102
+         vellore 
         </Address>
 
         {/* Coordinators */}

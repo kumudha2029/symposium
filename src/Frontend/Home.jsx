@@ -236,21 +236,10 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <GtecLogo src="/gtec.jpeg" alt="GTEC Logo" whileHover={{ scale: 1.05 }} />
-              <HeroTitle>Ganadipathy Tulsi's Jain Engineering College</HeroTitle>
+              
+              <HeroTitle>ABC engineering college</HeroTitle>
             </div>
-            <h6
-              style={{
-                color: "#ffffff",
-                fontSize: "0.75rem",
-                margin: "0px",
-                marginLeft: "70px",
-                marginTop: "5px",
-                fontFamily: "Times New Roman, Times, serif",
-              }}
-            >
-              Chittoor Cuddalore Road, Kaniyambadi Vellore - 632102
-            </h6>
+           
             <h6
               style={{
                 fontSize: "1rem",
@@ -322,7 +311,7 @@ export default function Home() {
             <p>
               📍 Location:{" "}
               <a
-                href="https://www.google.com/maps?q=Ganadipathy+Tulsi's+Jain+Engineering+College"
+                href=""
                 target="_blank"
                 rel="noopener noreferrer"
               >
