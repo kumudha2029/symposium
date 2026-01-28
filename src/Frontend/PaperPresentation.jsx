@@ -123,9 +123,9 @@ const PaperPresentation = ({ isOpen, onClose }) => (
                 Paper Selection Will be Intimated <br /> Through Email Only
               </li>
               <li>
-                Send your paper to the following <br /> mail id:{" "}
-                <a href="mailto:pinnacle@gtec.ac.in">
-                  <strong>pinnacle@gtec.ac.in</strong>
+                Send your paper to the following <br /> mail id : 
+                <a href="mailto:abc@gmail.com">
+                  <strong>abc@gmail.com</strong>
                 </a>
               </li>
               <li>

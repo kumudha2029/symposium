@@ -182,7 +182,7 @@ export default function Contact() {
 
         <IconBar>
           <IconCard
-            href="mailto:kumudhasri2920@gmail.com"
+            href="mailto:abc@gmail.com"
             title="Email"
             target="_blank"
             rel="noopener noreferrer"

@@ -285,7 +285,7 @@ export default function Home() {
               lineHeight: 1,
             }}
           >
-            Pinnacle 25
+            abc 25
           </HeroSubtitle>
 
           <h6
@@ -311,7 +311,7 @@ export default function Home() {
             <p>
               📍 Location:{" "}
               <a
-                href=""
+                href="https://www.google.com/maps/@12.7193928,79.2252531,14z?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -350,10 +350,6 @@ export default function Home() {
           <Rules />
         </Section>
 
-        {/* Gallery Section */}
-        <Section ref={galleryRef} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={sectionVariants}>
-          <Gallery isSection={true} />
-        </Section>
       </PageWrapper>
     </>
   );
