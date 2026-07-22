@@ -237,7 +237,7 @@ export default function Home() {
           >
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               
-              <HeroTitle>ABC engineering college</HeroTitle>
+              <HeroTitle>Ganadipathy Tulsi's Jain Engineering College</HeroTitle>
             </div>
            
             <h6
@@ -250,7 +250,7 @@ export default function Home() {
                 color: "#ffe600",
               }}
             >
-              The Department of IT, AI&DS and CSBS <br />
+              The Department of Computer Science & Business Systems <br />
               proudly presents
             </h6>
           </motion.div>
@@ -270,7 +270,7 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             <HeroSubtitle style={{ fontSize: "1.5rem", margin: "0px" }}>
-              National Level <br /> Technical Symposium
+              Tech Trivia
             </HeroSubtitle>
             <AnniversaryLogo src="/25year.png" alt="25 Years Celebration" whileHover={{ scale: 1.05 }} />
           </motion.div>
@@ -285,7 +285,7 @@ export default function Home() {
               lineHeight: 1,
             }}
           >
-            abc 25
+            Tech Trivia
           </HeroSubtitle>
 
           <h6
@@ -298,7 +298,7 @@ export default function Home() {
               textAlign: "center",
             }}
           >
-            A Summit of IT, AI & Business System
+            A Summit of Computer Science & Business System
           </h6>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 3 }}>
@@ -306,18 +306,9 @@ export default function Home() {
           </motion.div>
 
           <InfoBox>
-            <p>📅 Date: 16th October 2025</p>
+            <p>📅 Date: 25th July 2026</p>
             <p>⏰ Time: 9:00 AM – 5:00 PM</p>
-            <p>
-              📍 Location:{" "}
-              <a
-                href="https://www.google.com/maps/@12.7193928,79.2252531,14z?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on Google Maps
-              </a>
-            </p>
+
           </InfoBox>
 
           <motion.div style={{ display: "flex", gap: "15px", marginTop: "10px", flexWrap: "wrap", justifyContent: "center" }}>

@@ -48,8 +48,8 @@ const NavItem = styled(motion.div)`
 `;
 
 // Added FaImages for Gallery
-const icons = [<FaHome />, <FaCalendarAlt />, <FaListAlt />, <FaEnvelope />, <FaRegClipboard />];
-const labels = ["Home", "Events", "Agenda", "Contact", "Guidelines"];
+const icons = [<FaHome />, <FaCalendarAlt />, <FaImages />, <FaEnvelope />, <FaRegClipboard />];
+const labels = ["Home", "Events", "Gallery", "Contact", "Guidelines"];
 
 export default function Sidebar({ sectionRefs, isOpen, toggleSidebar }) {
   const scrollToSection = (i) => {

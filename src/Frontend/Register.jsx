@@ -220,12 +220,9 @@ function RegistrationPage() {
     name: "",
     email: "",
     gender: "",
-    college: "",
     degree: "",
-    branch: "",
     year: "",
     phone: "",
-    events: [],
   });
 
   const [status, setStatus] = useState("idle"); // idle | loading | success
@@ -278,7 +275,7 @@ function RegistrationPage() {
 
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxkUumyQSD-pGul2j3lpF6Yle66OsA7rTJyQZiV-HxDjSUIBKnDpQf2YueN-jUtcuFH/exec",
+        "https://docs.google.com/spreadsheets/d/1swPs7uulfQHzy_zTHnXTc4OoaNdeQIxacxvdPf48sh8/edit?usp=sharing",
         {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=UTF-8" },
@@ -340,48 +337,9 @@ function RegistrationPage() {
               <option value="Female,Male">Female,Male</option>
             </Select>
 
-           <Label>College</Label>
-            <Select
-              name="college"
-              value={isOtherCollege ? "Other" : formData.college}
-              onChange={handleCollegeChange}
-              required={!isOtherCollege}
-            >
-              <option value="">Select College</option>
-              <option value="C. Abdul Hakeem College of Engineering and Technology">C. Abdul Hakeem College of Engineering and Technology</option>
-              <option value="Annai Mira College of Engineering and Technology">Annai Mira College of Engineering and Technology</option>
-              <option value="Kingston Engineering College">Kingston Engineering College</option>
-              <option value="Sree Krishna College of Engineering">Sree Krishna College of Engineering</option>
-              <option value="Global Institute of Engineering and Technology">Global Institute of Engineering and Technology</option>
-              <option value="Adhiparasakthi College of Engineering">Adhiparasakthi College of Engineering</option>
-              <option value="Ranippettai Engineering College">Ranippettai Engineering College</option>
-              <option value="Saraswathi Velu College of Engineering">Saraswathi Velu College of Engineering</option>
-              <option value="Sri Nandhanam College and Technology">Sri Nandhanam College and Technology</option>
-              <option value="Podhigai College of Engineering and Technology">Podhigai College of Engineering and Technology</option>
-              <option value="Shri Sitheswarar Engineering College">Shri Sitheswarar Engineering College</option>
-              <option value="Bharathidasan Engineering College">Bharathidasan Engineering College</option>
-              <option value="Thanthai Periyar Government Institute of Technology">Thanthai Periyar Government Institute of Technology</option>
-              <option value="Sri Balaji Chockalingam Engineering College">Sri Balaji Chockalingam Engineering College</option>
-              <option value="University College of Engineering">University College of Engineering</option>
-              <option value="Arunai Engineering College">Arunai Engineering College</option>
-              <option value="Other">Other</option>
-            </Select>
-
-            {isOtherCollege && (
-              <Input
-                type="text"
-                name="college"
-                placeholder="Enter your college"
-                value={formData.college}
-                onChange={handleChange}
-                required
-              />
-            )}
-
             <Label>Degree</Label>
             <Select name="degree" value={formData.degree} onChange={handleChange} required>
               <option value="">Select Degree</option>
-              <option value="B.E">B.E</option>
               <option value="B.Tech">B.Tech</option>
             </Select>
 
@@ -393,10 +351,7 @@ function RegistrationPage() {
               required={!isOtherBranch}
             >
               <option value="">Select Branch</option>
-              <option value="AI & DS">AI & DS</option>
               <option value="CS & BS">CS & BS</option>
-              <option value="CSE">CSE</option>
-              <option value="IT">IT</option>
               <option value="Other">Other</option>
             </Select>
 
@@ -414,7 +369,6 @@ function RegistrationPage() {
             <Label>Year</Label>
             <Select name="year" value={formData.year} onChange={handleChange} required>
               <option value="">Select Year</option>
-              <option value="I">I</option>
               <option value="II">II</option>
               <option value="III">III</option>
               <option value="IV">IV</option>
@@ -422,23 +376,6 @@ function RegistrationPage() {
 
             <Label>Phone</Label>
             <Input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
-
-            <Label>Events</Label>
-            <CheckboxWrapper>
-              {["Paper Presentation", "Technical Quiz", "Coding & Debugging", "Tech Talks", "Crypto Crack"].map(
-                (event) => (
-                  <label key={event}>
-                    <input
-                      type="checkbox"
-                      value={event}
-                      checked={formData.events.includes(event)}
-                      onChange={handleCheckboxChange}
-                    />
-                    {event}
-                  </label>
-                )
-              )}
-            </CheckboxWrapper>
 
             <Button type="submit">Register</Button>
           </form>
@@ -456,7 +393,7 @@ function RegistrationPage() {
         <CongratsBox>
           <CongratsTitle>🎉 Congratulations {formData.name}!</CongratsTitle>
           <CongratsText>
-            You have successfully registered on <Eventname>Pinnacles 25</Eventname> for the following events:
+            You have successfully registered on <Eventname>Tech Trivia</Eventname> for the following events:
           </CongratsText>
           <EventList>
             {formData.events.map((event, index) => (
